@@ -15,6 +15,7 @@
     "linebreak-style": ["warn", "unix"],
     "quotes": ["warn", "single"],
     "semi": ["warn", "always"],
+    "no-unused-vars": "warn",
     "prefer-const": "error",
     "no-var": "error",
     "max-statements-per-line": [

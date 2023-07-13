@@ -1,5 +1,7 @@
+import 'dotenv/config';
 import { Client } from 'discord.js';
 import { config } from '../../config';
+import { handleListeners } from '../../handlers/handleListeners';
 
 export class Byte extends Client {
   constructor() {
@@ -7,6 +9,7 @@ export class Byte extends Client {
   }
 
   async deploy() {
-    await this.login(process.env.TOKEN);
+    await handleListeners();
+    await this.login(process.env.BOT_TOKEN);
   }
 }
