@@ -1,5 +1,5 @@
 export const colors = {
-  primary: '#02d784',
+  primary: '#00e484',
 };
 
 export const emojis = {
