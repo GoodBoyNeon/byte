@@ -30,7 +30,8 @@
   "dependencies": {
     "console-wizard": "^1.4.0",
     "discord.js": "^14.11.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "prettier": "^3.0.0"
   },
   "config": {
     "commitizen": {
