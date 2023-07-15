@@ -18,6 +18,13 @@
 
 ## Contributing
 
+All contributions are welcomed! Please follow the folder structure and naming conventions strictly. Use conventional commits for commit messages.
+
 ## Authors
 
+- [@GoodBoyNeon](https://twitter.com/neonthenerd)
+- [@AljoBerg](https://twitter.com/Aljo9481)
+
 ## License
+
+[MIT License](https://mit-license.org/)
