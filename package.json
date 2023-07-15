@@ -15,7 +15,7 @@
     "lint:fix": "eslint --fix .",
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
-    "ci": "yarn prettier:fix ** yarn lint:fix"
+    "ci": "yarn prettier:fix && yarn lint:fix"
   },
   "devDependencies": {
     "@types/node": "^20.4.1",
