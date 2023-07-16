@@ -15,7 +15,7 @@
 ## Features
 - Supports both slash and message commands
 - Available Commands:
- - Info commands (serverinfo, userinfo)
+  - Info commands (serverinfo, userinfo)
 
 ## Contributing
 
