@@ -11,11 +11,12 @@ export class Listener<K extends keyof ClientEvents> {
     this.once = once;
   }
 
-  protected run(...args: ClientEvents[K]) {
+  protected async run(...args: ClientEvents[K]) {
     if (args) {
       return;
     }
-    logger.info(`Received ${this.event} event`);
+    logger.error(`Listening to ${this.event}: No executable found!`);
+    return;
   }
 
   load() {
