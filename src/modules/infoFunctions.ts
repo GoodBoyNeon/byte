@@ -8,8 +8,8 @@ import {
   GuildMember,
 } from 'discord.js';
 import getColor from 'get-image-colors';
-import { emojis } from '../constants';
-import { ModifiedChatInputCommandInteraction } from '../types/IntercationTypes';
+import { emojis } from '../lib/';
+import { ModifiedChatInputCommandInteraction } from '../lib';
 
 export const getUserInfo = async (
   interaction: ModifiedChatInputCommandInteraction,
@@ -45,11 +45,8 @@ export const getUserInfo = async (
     roles += '...';
   }
   if (roles.length === 0) roles = 'None';
-  // eslint-disable-next-line no-console
-  console.log(roles);
 
   const embed = new EmbedBuilder()
-    // .setTitle(`${member.user.username}`)
     .setColor(primaryColorHex)
     .setThumbnail(`${member.displayAvatarURL()}`)
     .setDescription(`## ${member.user.username}`)
@@ -80,7 +77,7 @@ export const getUserInfo = async (
         inline: true,
       },
       {
-        name: 'Badges and Roles',
+        name: '**Badges and Roles**',
         value: '\n',
         inline: false,
       },
@@ -140,6 +137,8 @@ export const getServerInfo = async (
   const owner = `<@${guild?.ownerId}>`;
   const serverCreatedAt = `<t:${Math.floor(guild.createdTimestamp / 1000)}:R>`;
 
+  const totalChannels = guild.channels.cache.size;
+
   const numCategories =
     guild?.channels.cache.filter(
       channel => channel?.type === ChannelType.GuildCategory
@@ -187,7 +186,7 @@ export const getServerInfo = async (
         inline: true,
       },
       {
-        name: 'Server Stats',
+        name: '**Server Stats**',
         value: '\n',
         inline: false,
       },
@@ -202,49 +201,22 @@ export const getServerInfo = async (
         inline: true,
       },
       {
-        name: '\n',
-        value: '\n',
-        inline: false,
-      },
-      {
-        name: 'Channels and Roles',
-        value: '\n',
-        inline: false,
-      },
-      {
         name: `${emojis.smiley} Roles`,
         value: `${numRoles}`,
         inline: true,
       },
       {
-        name: `${emojis.discovery} Categoires`,
-        value: `${numCategories}`,
-        inline: true,
-      },
-      {
-        name: `${emojis.textChannel} Text Channels`,
-        value: `${numTextChannel}`,
-        inline: true,
-      },
-      {
-        name: `${emojis.threads} Threads`,
-        value: `${numThreads}`,
-        inline: true,
-      },
-      {
-        name: `${emojis.voice} Voice Channels`,
-        value: `${numVoiceChannel}`,
-        inline: true,
-      },
-      {
-        name: `${emojis.forums} Forum Channels`,
-        value: `${numForumChannel}`,
-        inline: true,
+        name: `**Channels (${totalChannels})**`,
+        value: `
+${emojis.discovery} Categoires: ${numCategories}
+${emojis.textChannel} Text Channels: ${numTextChannel}
+${emojis.threads} Threads: ${numThreads}
+${emojis.voice} Voice Channels: ${numVoiceChannel}
+${emojis.forums} Forum Channels: ${numForumChannel}
+`,
       },
     ],
   }).setColor(primaryColorHex);
-
-  // .setEmoji(':link:');
 
   const buttons = [];
 

@@ -161,7 +161,7 @@ export class ModlogConfiguration<
             channelId,
           },
         });
-        await interaction.followUp(`Set channel to ${channel}`);
+        await m.reply(`Set channel to ${channel}`);
       }
       if (key === 'enabled') {
         const enabled = value === 'yes' ? true : value === 'no' ? false : undefined;
@@ -182,7 +182,7 @@ export class ModlogConfiguration<
           },
         });
 
-        await interaction.followUp(`${status} ${this.options.name} Logger!`);
+        await m.reply(`${status} ${this.options.name} Logger!`);
       }
     });
   }

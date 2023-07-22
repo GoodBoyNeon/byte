@@ -7,13 +7,13 @@ export const messageDeleteLogger = async (
   message: Message<true>,
   channelId: string
 ) => {
-  let isLink = false;
+  let contentValue: string = `\`\`\`${message.content}\`\`\``;
 
-  let contentValue = `\`\`\`\n${message.content}\n\`\`\``;
-
-  if (contentValue.length > 1024) {
-    contentValue = await srcbinify(message.content, message.author?.username);
-    isLink = true;
+  if (contentValue?.length > 1024) {
+    contentValue = `[Click here (sourceb.in)](${await srcbinify(
+      message.content,
+      message.author?.username
+    )})`;
   }
 
   const embed = new EmbedBuilder({
@@ -24,19 +24,24 @@ export const messageDeleteLogger = async (
       iconURL: message.author?.displayAvatarURL(),
     },
     description: `**Author:** ${message.author?.username} (${message.member})`,
-    fields: [
-      {
-        name: 'Content',
-        value: contentValue,
-      },
-    ],
+
+    footer: {
+      text: 'Any embeds or files in the deleted message will be attached below',
+    },
   });
+  if (message.content.length !== 0) {
+    embed.addFields({
+      name: 'Content',
+      value: contentValue,
+    });
+  }
 
   const channel = client.channels.cache.get(channelId) as
     | TextChannel
     | ThreadChannel;
 
   await channel.send({
-    embeds: [embed],
+    embeds: [embed, ...message.embeds],
+    components: message.components,
   });
 };

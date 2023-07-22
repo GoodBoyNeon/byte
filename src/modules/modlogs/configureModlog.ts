@@ -1,15 +1,30 @@
 import { ModloggerType } from '@prisma/client';
-import { ModlogConfigurationOptions } from '../../lib/types/ModlogTypes';
 import { ModlogConfiguration } from './ModlogConfiguration';
-import { EmbedBuilder } from 'discord.js';
-import { prisma } from '../..';
-import { colors, emojis } from '../../lib';
+import { ModifiedChatInputCommandInteraction, embeds } from '../../lib';
+import { getOrCreateGuildConfig } from '../../util';
 
 export const configureModlog = async (
-  loggerName: ModloggerType,
-  guildId: string,
-  options: ModlogConfigurationOptions
+  modlogName: ModloggerType,
+  interaction: ModifiedChatInputCommandInteraction,
+  guildId: string
 ) => {
-  if (loggerName === 'MessageDelete') {
-  }
+  const modlogger = await getOrCreateGuildConfig({
+    name: modlogName,
+    guildId: guildId,
+    channelId: null,
+  });
+
+  if (!modlogger)
+    return {
+      embeds: [embeds.error],
+    };
+
+  const configurator = new ModlogConfiguration({
+    name: modlogName,
+    guildId: modlogger?.guildId,
+    channelId: modlogger?.channelId,
+    enabled: modlogger?.enabled,
+  });
+
+  await configurator.init(interaction);
 };

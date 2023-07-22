@@ -1,7 +1,6 @@
 export * from './constants';
 
 export * from './functions/registerCommands';
-export * from './functions/infoFunctions';
 
 export * from './structures/Byte';
 export * from './structures/Command';

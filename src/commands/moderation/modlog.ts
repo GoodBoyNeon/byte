@@ -14,7 +14,7 @@ import {
 } from '../../lib';
 import { ModloggerType } from '.prisma/client';
 import { prisma } from '../..';
-import { ModlogConfiguration } from '../../modules/modlogs';
+import { ModlogConfiguration, configureModlog } from '../../modules/modlogs';
 import { getOrCreateGuildConfig } from '../../util';
 
 const modlogChoices: ApplicationCommandOptionChoiceData<string>[] = Object.values(
@@ -53,12 +53,7 @@ class Modlog extends Command {
     });
   }
 
-  async run({
-    interaction,
-    args,
-    guild,
-    member,
-  }: CommandRunParams): CommandReturnType {
+  async run({ interaction, guild, member }: CommandRunParams): CommandReturnType {
     if (!interaction) return;
     if (!member) return;
 
@@ -68,26 +63,7 @@ class Modlog extends Command {
       const modlogName = interaction.options.getString(
         'modlog_name'
       ) as ModloggerType;
-
-      const modlogger = await getOrCreateGuildConfig({
-        name: modlogName,
-        guildId: guild?.id || '',
-        channelId: null,
-      });
-
-      if (!modlogger)
-        return {
-          embeds: [embeds.error],
-        };
-
-      const configurator = new ModlogConfiguration({
-        name: modlogName,
-        guildId: modlogger?.guildId,
-        channelId: modlogger?.channelId,
-        enabled: modlogger?.enabled,
-      });
-
-      await configurator.init(interaction);
+      await configureModlog(modlogName, interaction, guild?.id || '');
     }
   }
 }

@@ -3,14 +3,8 @@ import {
   ApplicationCommandType,
   GuildMember,
 } from 'discord.js';
-import {
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-  embeds,
-  getServerInfo,
-  getUserInfo,
-} from '../../lib';
+import { Command, CommandReturnType, CommandRunParams, embeds } from '../../lib';
+import { getServerInfo, getUserInfo } from '../../modules';
 
 class Info extends Command {
   constructor() {
