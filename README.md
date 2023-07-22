@@ -13,8 +13,9 @@
 </div>
 
 ## Features
-
-> Uhh, none for now...
+- Supports both slash and message commands
+- Available Commands:
+  - Info commands (serverinfo, userinfo)
 
 ## Contributing
 
