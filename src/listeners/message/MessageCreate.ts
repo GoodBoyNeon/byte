@@ -1,7 +1,7 @@
 import { Message } from 'discord.js';
-import { Listener } from '../lib';
-import { handleLegacyCommands } from '../handlers/handleLegacyCommands';
-import { config } from '../config';
+import { Listener } from '../../lib';
+import { handleLegacyCommands } from '../../handlers/';
+import { config } from '../../config';
 
 class MessageCreate extends Listener<'messageCreate'> {
   constructor() {

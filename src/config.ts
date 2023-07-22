@@ -3,7 +3,6 @@ import { ClientOptions, GatewayIntentBits } from 'discord.js';
 export type Config = {
   clientOptions: ClientOptions;
   primaryPrefix: string;
-  prefixRegexp: string;
 };
 
 export const config: Config = {
@@ -13,8 +12,8 @@ export const config: Config = {
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
       GatewayIntentBits.GuildMembers,
+      GatewayIntentBits.GuildMessageReactions,
     ],
   },
   primaryPrefix: '~',
-  prefixRegexp: '^byte[, ]|^<@933839241962729562>',
 };

@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
-import { Listener } from '../lib/structures/Listener';
+import { Listener } from '../../lib/';
 import { logger } from 'console-wizard';
-import { registerCommands } from '../lib/functions/registerCommands';
+import { registerCommands } from '../../lib/';
 
 class Ready extends Listener<'ready'> {
   constructor() {

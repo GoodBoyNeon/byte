@@ -1,6 +1,6 @@
 {
   "name": "byte",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Byte is a unique general use bot with moderation, reaction roles, giveaways and more!",
   "main": "dist/index.js",
   "repository": "https://github.com/GoodBoyNeon/byte.git",
@@ -15,7 +15,8 @@
     "lint:fix": "eslint --fix .",
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
-    "ci": "yarn prettier:fix && yarn lint:fix"
+    "ci": "yarn prettier:fix && yarn lint:fix",
+    "dbgen": "prisma format && prisma generate"
   },
   "devDependencies": {
     "@types/get-image-colors": "^4.0.2",
@@ -26,10 +27,12 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.44.0",
     "nodemon": "^3.0.1",
+    "prisma": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
   "dependencies": {
+    "@prisma/client": "5.0.0",
     "console-wizard": "^1.4.2",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",

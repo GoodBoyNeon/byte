@@ -6,7 +6,8 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,
-    "strict": true
+    "strict": true,
+    "incremental": true
   },
   "include": ["src/**/*", "environment.d.ts"],
   "exclude": ["node_modules/", "dist/"]

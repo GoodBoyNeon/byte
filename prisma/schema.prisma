@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model GuildConfiguration {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  guildId    String      @unique
+  modLoggers ModLogger[]
+}
+
+model ModLogger {
+  id          String             @id @default(auto()) @map("_id") @db.ObjectId
+  name        ModloggerType
+  enabled     Boolean
+  channelId   String?
+  guildConfig GuildConfiguration @relation(fields: [guildId], references: [guildId])
+  guildId     String
+
+  @@unique([name, guildId])
+}
+
+enum ModloggerType {
+  MessageDelete
+  MessageEdit
+}
+
+// id        String             @id @map("_id")

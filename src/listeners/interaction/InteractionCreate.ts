@@ -1,6 +1,6 @@
 import { Interaction, CacheType } from 'discord.js';
-import { Listener, ModifiedChatInputCommandInteraction } from '../lib';
-import { handleChatInputCommands } from '../handlers';
+import { Listener, ModifiedChatInputCommandInteraction } from '../../lib';
+import { handleChatInputCommands } from '../../handlers';
 
 class InteractionCreate extends Listener<'interactionCreate'> {
   constructor() {

@@ -3,7 +3,7 @@ import { importDefault } from '../util/importDefault';
 
 export const handleListeners = async () => {
   const listenersDir = `${__dirname}/../listeners/`;
-  const listenerFiles = getFiles(listenersDir);
+  const listenerFiles = getFiles(listenersDir, true);
 
   for (const file of listenerFiles) {
     // TODO: Typesafe `EventListener`

@@ -5,7 +5,6 @@ import {
   ChannelType,
   ColorResolvable,
   EmbedBuilder,
-  Guild,
   GuildMember,
 } from 'discord.js';
 import getColor from 'get-image-colors';
@@ -61,7 +60,7 @@ export const getUserInfo = async (
         inline: true,
       },
       {
-        name: `${emojis.nickname} Nickname`,
+        name: `${emojis.sprout} Nickname`,
         value: member.nickname || 'None',
         inline: true,
       },
@@ -79,11 +78,6 @@ export const getUserInfo = async (
         name: `${emojis.boost} Booster`,
         value: `${memberPremiumStatus}`,
         inline: true,
-      },
-      {
-        name: '\n',
-        value: '\n',
-        inline: false,
       },
       {
         name: 'Badges and Roles',
@@ -110,8 +104,7 @@ export const getUserInfo = async (
     .setURL(member.displayAvatarURL())
     .setStyle(ButtonStyle.Link)
     .setLabel('Avatar URL')
-    .setEmoji('<:linkicon:1130101449016213605>');
-  // .setEmoji(':link:');
+    .setEmoji(emojis.link);
 
   const buttons = [avatarButton];
 
@@ -122,7 +115,7 @@ export const getUserInfo = async (
       .setURL(bannerUrl)
       .setStyle(ButtonStyle.Link)
       .setLabel('Banner URL')
-      .setEmoji('<:linkicon:1130101449016213605>');
+      .setEmoji(emojis.link);
 
     buttons.push(bannerButton);
   }
@@ -194,11 +187,6 @@ export const getServerInfo = async (
         inline: true,
       },
       {
-        name: '\n',
-        value: '\n',
-        inline: false,
-      },
-      {
         name: 'Server Stats',
         value: '\n',
         inline: false,
@@ -229,27 +217,27 @@ export const getServerInfo = async (
         inline: true,
       },
       {
-        name: 'Categoires',
+        name: `${emojis.discovery} Categoires`,
         value: `${numCategories}`,
         inline: true,
       },
       {
-        name: 'Text Channels',
+        name: `${emojis.textChannel} Text Channels`,
         value: `${numTextChannel}`,
         inline: true,
       },
       {
-        name: 'Threads',
+        name: `${emojis.threads} Threads`,
         value: `${numThreads}`,
         inline: true,
       },
       {
-        name: 'Voice Channels',
+        name: `${emojis.voice} Voice Channels`,
         value: `${numVoiceChannel}`,
         inline: true,
       },
       {
-        name: 'Forum Channels',
+        name: `${emojis.forums} Forum Channels`,
         value: `${numForumChannel}`,
         inline: true,
       },
@@ -268,7 +256,7 @@ export const getServerInfo = async (
       .setURL(iconUrl)
       .setStyle(ButtonStyle.Link)
       .setLabel('Icon URL')
-      .setEmoji('<:linkicon:1130101449016213605>');
+      .setEmoji(emojis.link);
 
     buttons.push(iconButton);
   }
@@ -277,7 +265,7 @@ export const getServerInfo = async (
       .setURL(bannerUrl)
       .setStyle(ButtonStyle.Link)
       .setLabel('Banner URL')
-      .setEmoji('<:linkicon:1130101449016213605>');
+      .setEmoji(emojis.link);
 
     buttons.push(bannerButton);
   }

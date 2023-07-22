@@ -5,7 +5,6 @@ import { handleListeners } from '../../handlers/handleListeners';
 
 export class Byte extends Client {
   environment: string | undefined;
-  prefixMatch: RegExp;
 
   chatInputCommands: Collection<string, Command>;
   userContextMenus: Collection<string, Command>;
@@ -16,7 +15,6 @@ export class Byte extends Client {
     super(config.clientOptions);
 
     this.environment = process.env.NODE_ENV;
-    this.prefixMatch = new RegExp(config.prefixRegexp, 'i');
 
     this.chatInputCommands = new Collection();
     this.userContextMenus = new Collection();
