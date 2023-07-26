@@ -1,22 +1,32 @@
 import { ApplicationCommandType, EmbedBuilder } from 'discord.js';
-import { Command, CommandReturnType, CommandRunParams, colors } from '../../lib';
+import {
+  ChatInputCommand,
+  Command,
+  CommandReturnType,
+  CommandRunParams,
+  colors,
+  emojis,
+} from '../../lib';
 import ms from 'ms';
 
-class Ping extends Command {
+class Ping extends Command<ChatInputCommand> {
   constructor() {
     super({
       name: 'ping',
       description: 'Get the network information',
       type: ApplicationCommandType.ChatInput,
       application: true,
+      defered: true,
       legacy: true,
     });
   }
 
-  async run({ client, interaction, message }: CommandRunParams): CommandReturnType {
-    const uptime = ms(client.uptime || 0, {
-      long: true,
-    });
+  async run({
+    client,
+    interaction,
+    message,
+  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
+    const uptime = ms(client.uptime || 0);
     const websocketPing = client.ws.ping;
     let botPing: number = 0;
 
@@ -27,35 +37,42 @@ class Ping extends Command {
       await replyMessage.delete();
     }
     if (interaction) {
-      const replyMessage = await interaction.fetchReply();
+      const replyMessage = await interaction?.deferReply({
+        ephemeral: true,
+        fetchReply: true,
+      });
       botPing = replyMessage.createdTimestamp - interaction.createdTimestamp;
     }
 
     const embed = new EmbedBuilder({
       title: 'Pong!',
+      description: "Bot's Latency and Uptime",
+      thumbnail: {
+        url: client.user?.displayAvatarURL() || '',
+      },
       fields: [
         {
-          name: 'Uptime',
-          value: `\`\`\`${uptime}\`\`\``,
-          // inline: true,
+          name: `${emojis.smiley} Uptime`,
+          value: `\`\`\`\n${uptime}\n\`\`\``,
+          inline: true,
         },
         {
-          name: 'Websocket Ping',
-          value: `\`\`\`${websocketPing}ms\`\`\``,
-          // inline: true,
+          name: `${emojis.planet} Websocket Ping`,
+          value: `\`\`\`\n${websocketPing}ms\n\`\`\``,
+          inline: true,
         },
         {
-          name: 'Client Ping',
-          value: `\`\`\`${botPing}ms\`\`\``,
-          // inline: true,
+          name: `${emojis.sprout} Client Ping`,
+          value: `\`\`\`\n${botPing}ms\n\`\`\``,
+          inline: true,
         },
       ],
-      color: colors.secondary,
+      color: colors.primary,
     });
 
     return {
       embeds: [embed],
-      ephemeral: false,
+      ephemeral: true,
     };
   }
 }

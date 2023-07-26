@@ -1,21 +1,16 @@
+import { ModloggerType } from '.prisma/client';
 import {
   ApplicationCommandOptionChoiceData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
-  EmbedBuilder,
 } from 'discord.js';
 import {
+  ChatInputCommand,
   Command,
   CommandReturnType,
   CommandRunParams,
-  colors,
-  embeds,
-  emojis,
 } from '../../lib';
-import { ModloggerType } from '.prisma/client';
-import { prisma } from '../..';
-import { ModlogConfiguration, configureModlog } from '../../modules/modlogs';
-import { getOrCreateGuildConfig } from '../../util';
+import { configureModlog } from '../../modules/';
 
 const modlogChoices: ApplicationCommandOptionChoiceData<string>[] = Object.values(
   ModloggerType
@@ -26,14 +21,16 @@ const modlogChoices: ApplicationCommandOptionChoiceData<string>[] = Object.value
   };
 });
 
-class Modlog extends Command {
+class Modlog extends Command<ChatInputCommand> {
   constructor() {
     super({
       name: 'modlog',
       description: 'Manage mod logs',
       type: ApplicationCommandType.ChatInput,
+      defaultMemberPermissions: ['ManageGuild'],
       legacy: false,
       application: true,
+      defered: true,
       options: [
         {
           name: 'configure',
@@ -53,9 +50,15 @@ class Modlog extends Command {
     });
   }
 
-  async run({ interaction, guild, member }: CommandRunParams): CommandReturnType {
+  async run({
+    interaction,
+    guild,
+    member,
+  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
     if (!interaction) return;
     if (!member) return;
+
+    await interaction?.deferReply();
 
     const subcommand = interaction.options.getSubcommand();
 

@@ -3,10 +3,10 @@ import { getFiles, importDefault } from '../../util';
 import { client } from '../..';
 import { guildIds } from '../constants';
 import { TableData, logger } from 'console-wizard';
-import { Command } from '..';
+import { ChatInputCommand, Command, MessageCommand, UserCommand } from '..';
 
 export const registerCommands = async () => {
-  const commands: Command[] = [];
+  const commands: Command<ChatInputCommand | MessageCommand | UserCommand>[] = [];
   const commandFiles = getFiles(`${__dirname}/../../commands/`, true);
   const loadedCommands: TableData[] = [];
 

@@ -1,7 +1,7 @@
 import { Message, PartialMessage } from 'discord.js';
 import { prisma } from '../..';
 import { Listener } from '../../lib';
-import { messageDeleteLogger } from '../../modules/modlogs';
+import { messageDeleteLogger } from '../../modules/';
 
 class MessageDelete extends Listener<'messageDelete'> {
   constructor() {
@@ -17,8 +17,8 @@ class MessageDelete extends Listener<'messageDelete'> {
           },
         },
       });
-      if (modLogger?.enabled && modLogger.channelId) {
-        await messageDeleteLogger(message, modLogger.channelId);
+      if (modLogger?.enabled && modLogger.webhookUrl) {
+        await messageDeleteLogger(message, modLogger.webhookUrl);
       }
     }
   }

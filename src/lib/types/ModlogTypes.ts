@@ -5,4 +5,5 @@ export interface ModlogConfigurationOptions {
   guildId: string;
   channelId: string | null;
   enabled?: boolean;
+  webhookUrl?: string | null;
 }

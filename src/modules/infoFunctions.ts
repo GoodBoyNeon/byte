@@ -8,15 +8,93 @@ import {
   GuildMember,
 } from 'discord.js';
 import getColor from 'get-image-colors';
-import { emojis } from '../lib/';
+import {
+  CommandReturnType,
+  colors,
+  emojis,
+  inviteLink,
+  supportServerInvite,
+} from '../lib/';
 import { ModifiedChatInputCommandInteraction } from '../lib';
+import { client } from '..';
+import { cpus } from 'os';
+
+export const getBotInfo = async (
+  _interaction: ModifiedChatInputCommandInteraction,
+  ephemeral: boolean = false
+): CommandReturnType => {
+  const memoryUsage = `${Math.round(
+    process.memoryUsage().heapUsed / 1048576
+  )} MB / ${Math.round(process.memoryUsage().heapTotal / 1048576)} MB`;
+
+  const cpuUsage = `${cpus()
+    .map(({ times }) => {
+      return `${
+        Math.round(
+          ((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000
+        ) / 100
+      }%`;
+    })
+    .join(' | ')}`;
+
+  const embed = new EmbedBuilder({
+    description: `## ${client.user?.username}\nByte is a general-purpose Discord Bot made to serve your server, with cutting-edge features and little to no bugs!`,
+    thumbnail: { url: client.user?.displayAvatarURL() || '' },
+    color: colors.primary,
+    fields: [
+      {
+        name: `${emojis.id} ID`,
+        value: `${client.user?.id}`,
+        inline: true,
+      },
+      {
+        name: `${emojis.sprout} User ID`,
+        value: `${client.user?.tag}`,
+        inline: true,
+      },
+      {
+        name: `${emojis.public} Guilds Count`,
+        value: `${client.guilds.cache.size}`,
+        inline: true,
+      },
+      {
+        name: '**Specs for nerds**',
+        value: `
+**Written in:** Typescript (discord.js)
+**Node Version:** ${process.version}
+**CPU Usage:** ${cpuUsage}
+**RAM Usage:** ${memoryUsage}`,
+      },
+    ],
+  });
+  const inviteLinkButton = new ButtonBuilder()
+    .setStyle(ButtonStyle.Link)
+    .setURL(inviteLink)
+    .setLabel('Invite');
+
+  const joinServerButton = new ButtonBuilder()
+    .setStyle(ButtonStyle.Link)
+    .setURL(supportServerInvite)
+    .setLabel('Support Server');
+
+  const row = new ActionRowBuilder<ButtonBuilder>({
+    components: [inviteLinkButton, joinServerButton],
+  });
+
+  return {
+    embeds: [embed],
+    ephemeral,
+    components: [row],
+    content: `${client.guilds.cache.map(g => g.name).join(', ')}`,
+  };
+};
 
 export const getUserInfo = async (
   interaction: ModifiedChatInputCommandInteraction,
   member: GuildMember,
   ephemeral: boolean = false
 ) => {
-  const colors = await getColor(`${member.displayAvatarURL({ extension: 'png' })}`);
+  const colors = await getColor(`${member.displayAvatarURL({ extension: 'png' })} `);
   const hexColors = colors.map(color => color.hex());
   const primaryColorHex = hexColors[0] as ColorResolvable;
 
@@ -48,12 +126,12 @@ export const getUserInfo = async (
 
   const embed = new EmbedBuilder()
     .setColor(primaryColorHex)
-    .setThumbnail(`${member.displayAvatarURL()}`)
-    .setDescription(`## ${member.user.username}`)
+    .setThumbnail(`${member.displayAvatarURL()} `)
+    .setDescription(`## ${member.user.username} `)
     .setFields([
       {
         name: `${emojis.id} User ID`,
-        value: `${member.id}`,
+        value: `${member.id} `,
         inline: true,
       },
       {
@@ -63,17 +141,17 @@ export const getUserInfo = async (
       },
       {
         name: `${emojis.public} Created`,
-        value: `<t:${userCreatedTimestamp}:R>`,
+        value: `< t:${userCreatedTimestamp}: R > `,
         inline: false,
       },
       {
         name: `${emojis.members} Joined`,
-        value: `<t:${userJoinedTimestamp}:R>`,
+        value: `< t:${userJoinedTimestamp}: R > `,
         inline: true,
       },
       {
         name: `${emojis.boost} Booster`,
-        value: `${memberPremiumStatus}`,
+        value: `${memberPremiumStatus} `,
         inline: true,
       },
       {
@@ -83,17 +161,17 @@ export const getUserInfo = async (
       },
       {
         name: `${emojis.smiley} Badges`,
-        value: `${badges.join(' ')}` || 'None',
+        value: `${badges.join(' ')} ` || 'None',
         inline: false,
       },
       {
         name: `${emojis.planet} Role(s)`,
-        value: `${roles}`,
+        value: `${roles} `,
         inline: false,
       },
     ])
     .setFooter({
-      text: `Requested by ${interaction.user.username}`,
+      text: `Requested by ${interaction.user.username} `,
       iconURL: interaction.user.displayAvatarURL(),
     });
 
@@ -134,8 +212,8 @@ export const getServerInfo = async (
   const { guild } = interaction;
   if (!guild) return;
 
-  const owner = `<@${guild?.ownerId}>`;
-  const serverCreatedAt = `<t:${Math.floor(guild.createdTimestamp / 1000)}:R>`;
+  const owner = `< @${guild?.ownerId}> `;
+  const serverCreatedAt = `< t:${Math.floor(guild.createdTimestamp / 1000)}: R > `;
 
   const totalChannels = guild.channels.cache.size;
 
@@ -160,7 +238,7 @@ export const getServerInfo = async (
   ).size;
   const numRoles = guild.roles.cache.map(r => r).length;
 
-  const colors = await getColor(`${guild?.iconURL({ extension: 'png' })}`);
+  const colors = await getColor(`${guild?.iconURL({ extension: 'png' })} `);
   const hexColors = colors.map(color => color.hex());
   const primaryColorHex = hexColors[0] as ColorResolvable;
 
@@ -168,7 +246,7 @@ export const getServerInfo = async (
     thumbnail: {
       url: guild?.iconURL() || '',
     },
-    description: `## ${guild?.name}`,
+    description: `## ${guild?.name} `,
     fields: [
       {
         name: `${emojis.id} Server ID`,
@@ -192,7 +270,7 @@ export const getServerInfo = async (
       },
       {
         name: `${emojis.members} Total Members`,
-        value: `${guild.memberCount}`,
+        value: `${guild.memberCount} `,
         inline: true,
       },
       {
@@ -202,11 +280,11 @@ export const getServerInfo = async (
       },
       {
         name: `${emojis.smiley} Roles`,
-        value: `${numRoles}`,
+        value: `${numRoles} `,
         inline: true,
       },
       {
-        name: `**Channels (${totalChannels})**`,
+        name: `** Channels(${totalChannels}) ** `,
         value: `
 ${emojis.discovery} Categoires: ${numCategories}
 ${emojis.textChannel} Text Channels: ${numTextChannel}

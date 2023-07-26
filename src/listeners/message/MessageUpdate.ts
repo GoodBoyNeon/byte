@@ -1,7 +1,7 @@
 import { Message, PartialMessage } from 'discord.js';
 import { Listener } from '../../lib';
 import { prisma } from '../..';
-import { messageEditLogger } from '../../modules/modlogs';
+import { messageEditLogger } from '../../modules/';
 
 class MessageUpdate extends Listener<'messageUpdate'> {
   constructor() {
@@ -21,8 +21,8 @@ class MessageUpdate extends Listener<'messageUpdate'> {
           },
         },
       });
-      if (guildConfig?.enabled && guildConfig.channelId) {
-        await messageEditLogger(oldMessage, newMessage, guildConfig.channelId);
+      if (guildConfig?.enabled && guildConfig.webhookUrl) {
+        await messageEditLogger(oldMessage, newMessage, guildConfig.webhookUrl);
       }
     }
   }

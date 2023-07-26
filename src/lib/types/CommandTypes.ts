@@ -11,16 +11,20 @@ import {
   UserApplicationCommandData,
 } from 'discord.js';
 import { Byte } from '../structures/Byte';
-import { ModifiedChatInputCommandInteraction } from './IntercationTypes';
+import { CommandInteractionMap } from './IntercationTypes';
 
-export type CommandRunParams = {
+export type ChatInputCommand = ApplicationCommandType.ChatInput;
+export type MessageCommand = ApplicationCommandType.Message;
+export type UserCommand = ApplicationCommandType.User;
+
+export interface CommandRunParams<T extends keyof CommandInteractionMap> {
   client: Byte;
-  interaction?: ModifiedChatInputCommandInteraction;
+  interaction?: CommandInteractionMap[T];
   message?: Message;
   args: string[];
   member: GuildMember | null;
   guild: Guild | null;
-};
+}
 export type CommandReplyOptions = MessageReplyOptions &
   InteractionReplyOptions &
   InteractionDeferReplyOptions;
@@ -38,6 +42,7 @@ export type ChatInputCommandData = Command<
     devOnly?: boolean;
     ownerOnly?: boolean;
     application: true;
+    defered?: boolean;
     legacy: boolean;
   },
   ChatInputApplicationCommandData
@@ -49,6 +54,7 @@ export type UserContextMenuData = Command<
     devOnly?: boolean;
     ownerOnly?: boolean;
     application: true;
+    defered?: boolean;
     legacy: boolean;
   },
   UserApplicationCommandData
@@ -60,6 +66,7 @@ export type MessageContextMenuData = Command<
     devOnly?: boolean;
     ownerOnly?: boolean;
     application: true;
+    defered?: boolean;
     legacy: boolean;
   },
   MessageApplicationCommandData

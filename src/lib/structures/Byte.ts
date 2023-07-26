@@ -1,15 +1,15 @@
 import { Client, Collection } from 'discord.js';
-import { Command } from '..';
+import { ChatInputCommand, Command, MessageCommand, UserCommand } from '..';
 import { config } from '../../config';
 import { handleListeners } from '../../handlers/handleListeners';
 
 export class Byte extends Client {
   environment: string | undefined;
 
-  chatInputCommands: Collection<string, Command>;
-  userContextMenus: Collection<string, Command>;
-  messageContextMenus: Collection<string, Command>;
-  legacyCommands: Collection<string, Command>;
+  chatInputCommands: Collection<string, Command<ChatInputCommand>>;
+  userContextMenus: Collection<string, Command<UserCommand>>;
+  messageContextMenus: Collection<string, Command<MessageCommand>>;
+  legacyCommands: Collection<string, Command<ChatInputCommand>>;
 
   constructor() {
     super(config.clientOptions);

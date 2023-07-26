@@ -3,10 +3,16 @@ import {
   ApplicationCommandType,
   GuildMember,
 } from 'discord.js';
-import { Command, CommandReturnType, CommandRunParams, embeds } from '../../lib';
-import { getServerInfo, getUserInfo } from '../../modules';
+import {
+  ChatInputCommand,
+  Command,
+  CommandReturnType,
+  CommandRunParams,
+  embeds,
+} from '../../lib';
+import { getServerInfo, getUserInfo, getBotInfo } from '../../modules';
 
-class Info extends Command {
+class Info extends Command<ChatInputCommand> {
   constructor() {
     super({
       name: 'info',
@@ -18,7 +24,12 @@ class Info extends Command {
       options: [
         {
           name: 'server',
-          description: 'Get information on the server',
+          description: 'Get information about the server',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
+        {
+          name: 'bot',
+          description: 'Get information about Byte',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
@@ -37,7 +48,10 @@ class Info extends Command {
       ],
     });
   }
-  async run({ interaction, member }: CommandRunParams): CommandReturnType {
+  async run({
+    interaction,
+    member,
+  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
     if (!interaction) return { embeds: [embeds.error], ephemeral: true };
 
     const subcommand = interaction.options.getSubcommand();
@@ -49,6 +63,9 @@ class Info extends Command {
     }
     if (subcommand === 'server') {
       return await getServerInfo(interaction, false);
+    }
+    if (subcommand === 'bot') {
+      return await getBotInfo(interaction, false);
     }
   }
 }

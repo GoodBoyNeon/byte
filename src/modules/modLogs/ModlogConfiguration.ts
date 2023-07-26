@@ -1,8 +1,8 @@
 import { logger } from 'console-wizard';
-import { prisma } from '../..';
+import { client, prisma } from '../..';
 import { Configuration } from '../../lib/structures/Configuration';
 import { ModlogConfigurationOptions } from '../../lib/types/ModlogTypes';
-import { EmbedBuilder } from 'discord.js';
+import { ChannelType, EmbedBuilder } from 'discord.js';
 import {
   ModifiedChatInputCommandInteraction,
   colors,
@@ -144,10 +144,23 @@ export class ModlogConfiguration<
           await m.reply('Invalid Channel!');
           return;
         }
-        if (!channel.isTextBased() && !channel.isThread()) {
+        if (channel.type !== ChannelType.GuildText) {
           await m.reply(`${channel} is not a Text Channel`);
           return;
         }
+        const webhook = await channel
+          .createWebhook({
+            name: `Byte | ${this.options.name}`,
+            avatar: `${client.user?.displayAvatarURL()}`,
+            reason: this.options.name,
+          })
+          .catch(
+            async () =>
+              await m.reply(
+                'I do not have permissions to create webhook!\n\n**Hint:** Enable `Manage Webhooks` permissions for `byte` role'
+              )
+          );
+
         const channelId = channel.id;
 
         await prisma.modLogger.update({
@@ -159,6 +172,7 @@ export class ModlogConfiguration<
           },
           data: {
             channelId,
+            webhookUrl: webhook.url,
           },
         });
         await m.reply(`Set channel to ${channel}`);

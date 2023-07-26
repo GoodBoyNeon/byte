@@ -1,11 +1,10 @@
-import { EmbedBuilder, Message, TextChannel, ThreadChannel } from 'discord.js';
-import { srcbinify } from '../../util';
+import { EmbedBuilder, Message, WebhookClient } from 'discord.js';
 import { colors } from '../../lib';
-import { client } from '../..';
+import { srcbinify } from '../../util';
 
 export const messageDeleteLogger = async (
   message: Message<true>,
-  channelId: string
+  webhookUrl: string
 ) => {
   let contentValue: string = `\`\`\`${message.content}\`\`\``;
 
@@ -23,7 +22,7 @@ export const messageDeleteLogger = async (
       name: message.author?.username || '',
       iconURL: message.author?.displayAvatarURL(),
     },
-    description: `**Author:** ${message.author?.username} (${message.member})`,
+    description: `**Author:** ${message.author?.username} (${message.member})\n**Channel:**${message.channel}`,
 
     footer: {
       text: 'Any embeds or files in the deleted message will be attached below',
@@ -36,12 +35,10 @@ export const messageDeleteLogger = async (
     });
   }
 
-  const channel = client.channels.cache.get(channelId) as
-    | TextChannel
-    | ThreadChannel;
-
-  await channel.send({
+  const webhook = new WebhookClient({
+    url: webhookUrl,
+  });
+  await webhook.send({
     embeds: [embed, ...message.embeds],
-    components: message.components,
   });
 };

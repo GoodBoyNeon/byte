@@ -1,8 +1,9 @@
-import { ClientOptions, GatewayIntentBits } from 'discord.js';
+import { ClientOptions, GatewayIntentBits, PermissionFlagsBits } from 'discord.js';
 
 export type Config = {
   clientOptions: ClientOptions;
   primaryPrefix: string;
+  requiredPermissions: bigint[];
 };
 
 export const config: Config = {
@@ -16,4 +17,9 @@ export const config: Config = {
     ],
   },
   primaryPrefix: '~',
+  requiredPermissions: [
+    PermissionFlagsBits.SendMessages,
+    PermissionFlagsBits.AddReactions,
+    PermissionFlagsBits.ManageWebhooks,
+  ],
 };

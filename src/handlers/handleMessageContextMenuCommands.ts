@@ -1,10 +1,10 @@
 import { client } from '..';
-import { ModifiedChatInputCommandInteraction } from '../lib';
+import { ModifiedMessageContextMenuCommandInteraction } from '../lib';
 
-export const handleChatInputCommands = async (
-  interaction: ModifiedChatInputCommandInteraction
+export const handleMessageContextMenuCommands = async (
+  interaction: ModifiedMessageContextMenuCommandInteraction
 ) => {
-  const command = client.chatInputCommands.get(interaction.commandName);
+  const command = client.messageContextMenus.get(interaction.commandName);
   const args: string[] = [];
 
   interaction.options.data.forEach(({ value }) => {

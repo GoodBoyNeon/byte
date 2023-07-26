@@ -2,6 +2,9 @@ import { EmbedBuilder } from 'discord.js';
 
 export const supportServerInvite = 'https://discord.gg/hQpYpA93uA';
 
+export const inviteLink =
+  'https://discord.com/api/oauth2/authorize?client_id=933839241962729562&permissions=403041398&scope=bot%20applications.commands';
+
 export const guildIds = {
   devGuildId: '1108888085988638844',
   mainGuildId: '964184865480278026',
@@ -44,6 +47,12 @@ export const embeds = {
 
   expired: new EmbedBuilder({
     title: 'This interaction has expired!',
+    color: colors.red,
+  }),
+
+  permissionError: new EmbedBuilder({
+    title: 'Access Denied: Level Up Your Permissions!',
+    description: 'You do NOT have sufficient permissions to perform this action!',
     color: colors.red,
   }),
 };

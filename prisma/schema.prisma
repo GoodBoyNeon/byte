@@ -23,6 +23,7 @@ model ModLogger {
   channelId   String?
   guildConfig GuildConfiguration @relation(fields: [guildId], references: [guildId])
   guildId     String
+  webhookUrl  String?
 
   @@unique([name, guildId])
 }
@@ -30,6 +31,8 @@ model ModLogger {
 enum ModloggerType {
   MessageDelete
   MessageEdit
+  Ban
+  Kick
 }
 
 // id        String             @id @map("_id")

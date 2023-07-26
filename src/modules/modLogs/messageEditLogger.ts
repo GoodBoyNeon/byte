@@ -1,21 +1,15 @@
-import {
-  EmbedBuilder,
-  Message,
-  PartialMessage,
-  TextChannel,
-  ThreadChannel,
-} from 'discord.js';
+import { EmbedBuilder, Message, PartialMessage, WebhookClient } from 'discord.js';
 import { colors } from '../../lib';
 import { srcbinify } from '../../util';
-import { client } from '../..';
 
 export const messageEditLogger = async (
   oldMessage: Message | PartialMessage,
   newMessage: Message | PartialMessage,
-  channnelId: string
+  webhookUrl: string
 ) => {
-  if (oldMessage.partial) console.log('ol partial');
-  if (newMessage.partial) console.log('ew partial');
+  if (oldMessage.author?.bot) return;
+  if (oldMessage.content === newMessage.content) return;
+
   let oldContentValue: string = `\`\`\`${oldMessage.content}\`\`\``;
   let newContentValue: string = `\`\`\`${newMessage.content}\`\`\``;
 
@@ -33,9 +27,8 @@ export const messageEditLogger = async (
   }
 
   const embed = new EmbedBuilder({
-    title: 'New Message Edited',
     color: colors.secondary,
-    description: `**Author:** ${oldMessage.author?.username} (${oldMessage.member})`,
+    description: `### [A message](${newMessage.url}) was edited!\n**Author:** ${oldMessage.author?.username} (${oldMessage.member})\n**Channel:**${newMessage.channel}`,
     author: {
       name: oldMessage.author?.username || '',
       iconURL: oldMessage.author?.displayAvatarURL(),
@@ -54,8 +47,8 @@ export const messageEditLogger = async (
       value: `${newContentValue}`,
     });
   }
-  const channel = client.channels.cache.get(channnelId) as
-    | TextChannel
-    | ThreadChannel;
-  channel.send({ embeds: [embed] });
+  const webhook = new WebhookClient({
+    url: webhookUrl,
+  });
+  await webhook.send({ embeds: [embed] });
 };

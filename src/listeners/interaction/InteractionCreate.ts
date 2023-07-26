@@ -1,6 +1,13 @@
 import { Interaction, CacheType } from 'discord.js';
-import { Listener, ModifiedChatInputCommandInteraction } from '../../lib';
-import { handleChatInputCommands } from '../../handlers';
+import {
+  Listener,
+  ModifiedChatInputCommandInteraction,
+  ModifiedMessageContextMenuCommandInteraction,
+} from '../../lib';
+import {
+  handleChatInputCommands,
+  handleMessageContextMenuCommands,
+} from '../../handlers';
 
 class InteractionCreate extends Listener<'interactionCreate'> {
   constructor() {
@@ -11,6 +18,11 @@ class InteractionCreate extends Listener<'interactionCreate'> {
     if (interaction.isChatInputCommand()) {
       await handleChatInputCommands(
         interaction as ModifiedChatInputCommandInteraction
+      );
+    }
+    if (interaction.isMessageContextMenuCommand()) {
+      await handleMessageContextMenuCommands(
+        interaction as ModifiedMessageContextMenuCommandInteraction
       );
     }
   }

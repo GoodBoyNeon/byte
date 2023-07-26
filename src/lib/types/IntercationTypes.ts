@@ -13,9 +13,22 @@ export interface ModifiedChatInputCommandInteraction
 export interface ModifiedUserContextMenuCommandInteraction
   extends UserContextMenuCommandInteraction {
   targetMember: GuildMember;
+  member: GuildMember;
 }
 
 export interface ModifiedMessageContextMenuCommandInteraction
   extends MessageContextMenuCommandInteraction {
   targetMember: GuildMember;
+  member: GuildMember;
 }
+
+export interface CommandInteractionMap {
+  1: ModifiedChatInputCommandInteraction;
+  2: ModifiedUserContextMenuCommandInteraction;
+  3: ModifiedMessageContextMenuCommandInteraction;
+}
+
+export type ModifiedCommandInteraction =
+  | ModifiedChatInputCommandInteraction
+  | ModifiedUserContextMenuCommandInteraction
+  | ModifiedMessageContextMenuCommandInteraction;
