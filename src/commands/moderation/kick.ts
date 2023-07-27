@@ -9,34 +9,27 @@ import {
   CommandReturnType,
   CommandRunParams,
 } from '../../lib';
-import { ban } from '../../modules/';
+import { kick } from '../../modules/';
 
-class Ban extends Command<ChatInputCommand> {
+class Kick extends Command<ChatInputCommand> {
   constructor() {
     super({
-      name: 'ban',
+      name: 'kick',
       type: ApplicationCommandType.ChatInput,
-      description: 'Ban a user',
+      description: 'kick a user',
       legacy: false,
       application: true,
-      defaultMemberPermissions: ['BanMembers'],
+      defaultMemberPermissions: ['KickMembers'],
       options: [
         {
           name: 'user',
-          description: 'The target user to ban',
+          description: 'The target user to kick',
           type: ApplicationCommandOptionType.User,
           required: true,
         },
         {
-          name: 'delete_messages',
-          description:
-            "Delete the user's messages? If yes, deletes messages from last 7 days",
-          type: ApplicationCommandOptionType.Boolean,
-          required: false,
-        },
-        {
           name: 'reason',
-          description: 'Reason for the ban',
+          description: 'Reason for the kick',
           type: ApplicationCommandOptionType.String,
           required: false,
         },
@@ -50,12 +43,10 @@ class Ban extends Command<ChatInputCommand> {
     const target = interaction.options.getMember('user') as GuildMember;
     if (!target) return;
 
-    const deleteMsg = interaction.options.getBoolean('delete_messages') ?? false;
-
     const reason = interaction.options.getString('reason') ?? undefined;
 
-    await ban(target, interaction, deleteMsg, reason);
+    await kick(target, interaction, reason);
   }
 }
 
-export default Ban;
+export default Kick;

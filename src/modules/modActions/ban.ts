@@ -1,7 +1,7 @@
 import { EmbedBuilder, GuildMember } from 'discord.js';
 import { ModifiedCommandInteraction, colors, embeds } from '../../lib';
 import { prisma } from '../..';
-import { logBan } from '../modLogs/banLogger';
+import { logBan, logKick } from '..';
 
 export const ban = async (
   target: GuildMember,
@@ -69,7 +69,6 @@ export const ban = async (
     embeds: [
       new EmbedBuilder({
         description: `### **Successfully banned ${target}!**`,
-        // timestamp: new Date(),
         color: colors.primary,
       }),
     ],
