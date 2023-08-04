@@ -8,9 +8,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/index.ts",
-    "prod": "NODE_ENV=production yarn build && yarn start",
+    "prod": "NODE_ENV=production yarn build && node .",
     "build": "tsc",
-    "start": "node .",
+    "start": "yarn prod",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "prettier": "prettier . --check",
@@ -27,6 +27,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.44.0",
     "nodemon": "^3.0.1",
+    "pm2": "^5.3.0",
     "prisma": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
