@@ -1,7 +1,8 @@
-import { Client, Collection } from 'discord.js';
+import { ActivityType, Client, Collection } from 'discord.js';
 import { ChatInputCommand, Command, MessageCommand, UserCommand } from '..';
 import { config } from '../../config';
 import { handleListeners } from '../../handlers/handleListeners';
+import { client } from '../..';
 
 export class Byte extends Client {
   environment: string | undefined;
@@ -25,5 +26,13 @@ export class Byte extends Client {
   async deploy() {
     await handleListeners();
     await this.login(process.env.BOT_TOKEN);
+    client.user?.setPresence({
+      activities: [
+        {
+          name: `${client.guilds.cache.size} Servers!`,
+          type: ActivityType.Watching,
+        },
+      ],
+    });
   }
 }
