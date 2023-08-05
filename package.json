@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development nodemon src/index.ts",
-    "prod": "NODE_ENV=production yarn build && node .",
+    "prod": "NODE_ENV=production git pull && yarn build && node .",
     "build": "tsc",
     "start": "yarn prod",
     "lint": "eslint .",
