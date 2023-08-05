@@ -15,7 +15,7 @@ class GuildCreate extends Listener<'guildCreate'> {
           create: {
             enabled: false,
             channelId: null,
-            attachments: true,
+            attachments: false,
           },
         },
         modLoggers: {
