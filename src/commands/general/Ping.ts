@@ -67,7 +67,7 @@ class Ping extends Command<ChatInputCommand> {
           inline: true,
         },
       ],
-      color: colors.primary,
+      color: colors.green,
     });
 
     return {

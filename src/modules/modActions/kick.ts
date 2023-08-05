@@ -60,7 +60,7 @@ export const kick = async (
       new EmbedBuilder({
         description: `### **Successfully kicked ${target}!**`,
         // timestamp: new Date(),
-        color: colors.primary,
+        color: colors.green,
       }),
     ],
   });

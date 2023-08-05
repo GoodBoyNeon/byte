@@ -11,6 +11,13 @@ class GuildCreate extends Listener<'guildCreate'> {
     await prisma.guildConfiguration.create({
       data: {
         guildId: guild.id,
+        suggestionsConfig: {
+          create: {
+            enabled: false,
+            channelId: null,
+            attachments: true,
+          },
+        },
         modLoggers: {
           createMany: {
             data: [

@@ -1,4 +1,9 @@
-import { ClientOptions, GatewayIntentBits, PermissionFlagsBits } from 'discord.js';
+import {
+  ClientOptions,
+  GatewayIntentBits,
+  Partials,
+  PermissionFlagsBits,
+} from 'discord.js';
 
 export type Config = {
   clientOptions: ClientOptions;
@@ -15,6 +20,7 @@ export const config: Config = {
       GatewayIntentBits.GuildMembers,
       GatewayIntentBits.GuildMessageReactions,
     ],
+    partials: [Partials.Message, Partials.Channel, Partials.Reaction],
   },
   primaryPrefix: '~',
   requiredPermissions: [

@@ -7,8 +7,15 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "strict": true,
-    "incremental": true
+    "incremental": true,
+    "noImplicitAny": false
   },
-  "include": ["src/**/*", "environment.d.ts"],
-  "exclude": ["node_modules/", "dist/"]
+  "include": [
+    "src/**/*",
+    "environment.d.ts"
+  ],
+  "exclude": [
+    "node_modules/",
+    "dist/"
+  ]
 }

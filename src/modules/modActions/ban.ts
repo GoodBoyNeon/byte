@@ -69,7 +69,7 @@ export const ban = async (
     embeds: [
       new EmbedBuilder({
         description: `### **Successfully banned ${target}!**`,
-        color: colors.primary,
+        color: colors.green,
       }),
     ],
   });

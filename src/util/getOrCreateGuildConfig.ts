@@ -1,6 +1,6 @@
 import { logger } from 'console-wizard';
 import { prisma } from '..';
-import { ModlogConfigurationOptions } from '../lib/types/ModlogTypes';
+import { ModlogConfigurationOptions } from '../lib/types/ConfigurationTypes';
 
 export const getOrCreateGuildConfig = async (
   options: ModlogConfigurationOptions

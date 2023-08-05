@@ -40,7 +40,7 @@ export const getBotInfo = async (
   const embed = new EmbedBuilder({
     description: `## ${client.user?.username}\nByte is a general-purpose Discord Bot made to serve your server, with cutting-edge features and little to no bugs!`,
     thumbnail: { url: client.user?.displayAvatarURL() || '' },
-    color: colors.primary,
+    color: colors.green,
     fields: [
       {
         name: `${emojis.id} ID`,
@@ -296,7 +296,7 @@ ${emojis.forums} Forum Channels: ${numForumChannel}
     ],
   }).setColor(primaryColorHex);
 
-  const buttons = [];
+  const buttons: ButtonBuilder[] = [];
 
   const iconUrl = guild.iconURL();
   const bannerUrl = guild.bannerURL();

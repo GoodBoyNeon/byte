@@ -11,10 +11,11 @@ export const guildIds = {
 };
 
 export const colors = {
-  primary: 0x00e484,
+  green: 0x00e484,
   secondary: 0x2b2d31,
   yellow: 0xf9e2af,
   red: 0xf38ba8,
+  white: 0xf1f1f1,
 };
 
 export const emojis = {
@@ -36,6 +37,10 @@ export const emojis = {
   voice: '<:voice:1131574375167049833>',
   discovery: '<:discovery:1131574372121980978>',
   forums: '<:forums:1131575144775688292>',
+  greenBox: '<:greenbox:1134837774172819496>',
+  redBox: '<:redbox:1134837771748511776>',
+  upvote: '<:upvote:1134841387955781632>',
+  downvote: '<:downvote:1134841385166577724>',
 };
 
 export const embeds = {
