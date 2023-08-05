@@ -1,7 +1,6 @@
 import { logger } from 'console-wizard';
 import { client, prisma } from '../..';
-import { Configuration } from '../../lib/structures/Configuration';
-import { ModlogConfigurationOptions } from '../../lib/types/ModlogTypes';
+import { ModlogConfigurationOptions } from '../../lib/';
 import { ChannelType, EmbedBuilder } from 'discord.js';
 import {
   ModifiedChatInputCommandInteraction,
@@ -10,11 +9,10 @@ import {
   emojis,
 } from '../../lib';
 
-export class ModlogConfiguration<
-  T extends ModlogConfigurationOptions,
-> extends Configuration<T> {
+export class ModlogConfiguration<T extends ModlogConfigurationOptions> {
+  options: T;
   constructor(options: T) {
-    super(options);
+    this.options = options;
   }
 
   async getModLogger() {
@@ -80,7 +78,7 @@ export class ModlogConfiguration<
     const embed = new EmbedBuilder({
       title: `${emojis.gear} ${this.options.name} Logger`,
 
-      description: `Confugure ${this.options.name} mog logger. To change a option, send a message with \`option_name new_value\`. React to ${emojis.x} to cancel.`,
+      description: `Configure ${this.options.name} mog logger. To change a option, send a message with \`option_name new_value\`. React to ${emojis.x} to cancel.`,
       color: colors.secondary,
       fields: [
         {

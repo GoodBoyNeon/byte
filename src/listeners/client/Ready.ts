@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import { Listener } from '../../lib/';
+import { Listener, updateGuildConfig } from '../../lib/';
 import { logger } from 'console-wizard';
 import { registerCommands } from '../../lib/';
 
@@ -12,6 +12,7 @@ class Ready extends Listener<'ready'> {
     logger.success(`Connected to Discord via Client ${client.user.tag}!`);
 
     await registerCommands();
+    await updateGuildConfig();
   }
 }
 

@@ -11,9 +11,10 @@ datasource db {
 }
 
 model GuildConfiguration {
-  id         String      @id @default(auto()) @map("_id") @db.ObjectId
-  guildId    String      @unique
-  modLoggers ModLogger[]
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  guildId           String             @unique
+  modLoggers        ModLogger[]
+  suggestionsConfig SuggestionsConfig?
 }
 
 model ModLogger {
@@ -26,6 +27,15 @@ model ModLogger {
   webhookUrl  String?
 
   @@unique([name, guildId])
+}
+
+model SuggestionsConfig {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+  enabled     Boolean
+  attachments Boolean
+  channelId   String?
+  guildConfig GuildConfiguration? @relation(fields: [guildId], references: [guildId])
+  guildId     String              @unique
 }
 
 enum ModloggerType {

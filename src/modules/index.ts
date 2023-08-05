@@ -9,3 +9,8 @@ export * from './modLogs/logMessageEdit';
 
 export * from './modActions/ban';
 export * from './modActions/kick';
+
+export * from './suggestions/getColor';
+export * from './suggestions/getImpression';
+export * from './suggestions/isSuggestionMessage';
+export * from './suggestions/updateSuggestionMessage';
