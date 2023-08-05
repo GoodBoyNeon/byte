@@ -14,11 +14,7 @@ import {
 } from '../../lib';
 import { client, prisma } from '../..';
 import { SuggestionStatus } from '../../lib/types/SuggestionTypes';
-<<<<<<< HEAD
 import { getColor, getImpression } from '../../modules';
-=======
-import { getImpression } from '../../modules';
->>>>>>> refs/remotes/origin/main
 
 class Suggest extends Command<ChatInputCommand> {
   constructor() {
@@ -100,15 +96,10 @@ class Suggest extends Command<ChatInputCommand> {
     const status: SuggestionStatus = 'Under Review';
 
     const impression = getImpression(1, 1);
-<<<<<<< HEAD
     const color = getColor(1, 1);
 
     const embed = new EmbedBuilder({
       color,
-=======
-
-    const embed = new EmbedBuilder({
->>>>>>> refs/remotes/origin/main
       author: {
         name: interaction.user.username,
         iconURL: interaction.member.displayAvatarURL(),
@@ -147,13 +138,10 @@ class Suggest extends Command<ChatInputCommand> {
 
     await message.react(emojis.upvote);
     await message.react(emojis.downvote);
-<<<<<<< HEAD
     await message.startThread({
       name: `${interaction.user.username}'s Suggestion`,
       reason: 'Suggestion',
     });
-=======
->>>>>>> refs/remotes/origin/main
 
     return {
       embeds: [
