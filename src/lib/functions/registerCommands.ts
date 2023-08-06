@@ -56,8 +56,8 @@ export const registerCommands = async () => {
     );
 
     /* Uncomment to Reset all commands */
-    await client.application?.commands.set([]);
-    await devGuild?.commands.set([]);
+    // await client.application?.commands.set([]);
+    // await devGuild?.commands.set([]);
   }
   if (client.environment === 'production') {
     await client.application?.commands.set(commands.map(c => c.data));
