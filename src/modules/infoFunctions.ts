@@ -8,21 +8,15 @@ import {
   GuildMember,
 } from 'discord.js';
 import getColor from 'get-image-colors';
-import {
-  CommandReturnType,
-  colors,
-  emojis,
-  inviteLink,
-  supportServerInvite,
-} from '../lib/';
+import { colors, emojis, inviteLink, supportServerInvite } from '../lib/';
 import { ModifiedChatInputCommandInteraction } from '../lib';
 import { client } from '..';
 import { cpus } from 'os';
 
 export const getBotInfo = async (
-  _interaction: ModifiedChatInputCommandInteraction,
+  interaction: ModifiedChatInputCommandInteraction,
   ephemeral: boolean = false
-): CommandReturnType => {
+) => {
   const memoryUsage = `${Math.round(
     process.memoryUsage().heapUsed / 1048576
   )} MB / ${Math.round(process.memoryUsage().heapTotal / 1048576)} MB`;
@@ -81,12 +75,12 @@ export const getBotInfo = async (
     components: [inviteLinkButton, joinServerButton],
   });
 
-  return {
+  await interaction.reply({
     embeds: [embed],
     ephemeral,
     components: [row],
     content: `${client.guilds.cache.map(g => g.name).join(', ')}`,
-  };
+  });
 };
 
 export const getUserInfo = async (
@@ -198,11 +192,11 @@ export const getUserInfo = async (
   const row = new ActionRowBuilder<ButtonBuilder>({
     components: buttons,
   });
-  return {
+  await interaction.reply({
     embeds: [embed],
     components: [row],
     ephemeral,
-  };
+  });
 };
 
 export const getServerInfo = async (
@@ -324,11 +318,11 @@ ${emojis.forums} Forum Channels: ${numForumChannel}
     components: buttons,
   });
 
-  return {
+  await interaction.reply({
     embeds: [embed],
     components: [row],
     ephemeral,
-  };
+  });
 };
 
 type Badge = {

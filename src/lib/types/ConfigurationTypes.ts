@@ -1,6 +1,5 @@
 import { ModloggerType, Prisma } from '@prisma/client';
 import { ChannelType } from 'discord.js';
-import { type } from 'os';
 
 export type ConfigurationData<T extends Prisma.ModelName> = {
   name: T;

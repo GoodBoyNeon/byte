@@ -1,10 +1,5 @@
 import { ApplicationCommandType } from 'discord.js';
-import {
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-  MessageCommand,
-} from '../../lib';
+import { Command, CommandRunParams, MessageCommand } from '../../lib';
 import { srcbinify } from '../../util';
 
 class Srcbinify extends Command<MessageCommand> {
@@ -12,25 +7,24 @@ class Srcbinify extends Command<MessageCommand> {
     super({
       name: 'srcbinify',
       type: ApplicationCommandType.Message,
-      application: true,
-      legacy: false,
     });
   }
 
-  async run({ interaction }: CommandRunParams<MessageCommand>): CommandReturnType {
+  async run({ interaction }: CommandRunParams<MessageCommand>) {
     const content = interaction?.targetMessage.content;
 
     if (!content) {
-      return {
+      await interaction.reply({
         content: 'I can only srcbinify text content!',
         ephemeral: true,
-      };
+      });
+      return;
     }
 
-    return {
+    await interaction.reply({
       content: await srcbinify(content),
       ephemeral: true,
-    };
+    });
   }
 }
 

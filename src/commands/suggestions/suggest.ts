@@ -7,7 +7,6 @@ import {
 import {
   ChatInputCommand,
   Command,
-  CommandReturnType,
   CommandRunParams,
   colors,
   emojis,
@@ -22,9 +21,6 @@ class Suggest extends Command<ChatInputCommand> {
       name: 'suggest',
       type: ApplicationCommandType.ChatInput,
       description: 'Make a suggestion!',
-      legacy: false,
-      application: true,
-      defered: true,
       options: [
         {
           name: 'suggestion',
@@ -42,7 +38,7 @@ class Suggest extends Command<ChatInputCommand> {
     });
   }
 
-  async run({ interaction }: CommandRunParams<ChatInputCommand>): CommandReturnType {
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     if (!interaction) return;
     await interaction.deferReply({ ephemeral: true });
 
@@ -55,7 +51,7 @@ class Suggest extends Command<ChatInputCommand> {
       },
     });
     if (!suggestionsConfig?.enabled) {
-      return {
+      await interaction.followUp({
         embeds: [
           new EmbedBuilder({
             title: 'This server has not enabled suggestions!',
@@ -63,10 +59,11 @@ class Suggest extends Command<ChatInputCommand> {
           }),
         ],
         ephemeral: true,
-      };
+      });
+      return;
     }
-    if (!suggestionsConfig.attachments && attachment) {
-      return {
+    if (!suggestionsConfig?.attachments && attachment) {
+      await interaction.followUp({
         embeds: [
           new EmbedBuilder({
             title: 'This server does not support attachments for suggestions!',
@@ -75,14 +72,15 @@ class Suggest extends Command<ChatInputCommand> {
           }),
         ],
         ephemeral: true,
-      };
+      });
+      return;
     }
     const channel = client.channels.cache.get(
-      suggestionsConfig.channelId || ''
+      suggestionsConfig?.channelId || ''
     ) as TextChannel | null;
 
     if (!channel) {
-      return {
+      await interaction.followUp({
         embeds: [
           new EmbedBuilder({
             title: 'This server does not have a channel for suggestions!',
@@ -90,7 +88,8 @@ class Suggest extends Command<ChatInputCommand> {
           }),
         ],
         ephemeral: true,
-      };
+      });
+      return;
     }
 
     const status: SuggestionStatus = 'Under Review';
@@ -124,11 +123,11 @@ class Suggest extends Command<ChatInputCommand> {
       },
     });
 
-    const message = await channel.send({
+    const message = await channel?.send({
       embeds: [embed],
     });
 
-    await message.edit({
+    await message?.edit({
       embeds: [
         embed.setFooter({
           text: `Suggestion ID: ${message.id}`,
@@ -136,21 +135,21 @@ class Suggest extends Command<ChatInputCommand> {
       ],
     });
 
-    await message.react(emojis.upvote);
-    await message.react(emojis.downvote);
-    await message.startThread({
+    await message?.react(emojis.upvote);
+    await message?.react(emojis.downvote);
+    await message?.startThread({
       name: `${interaction.user.username}'s Suggestion`,
       reason: 'Suggestion',
     });
 
-    return {
+    await interaction.followUp({
       embeds: [
         new EmbedBuilder({
           title: 'Successfully suggested!',
           description: `Your suggestion has been sent in ${channel}`,
         }),
       ],
-    };
+    });
   }
 }
 

@@ -7,7 +7,7 @@ export const messageEditLogger = async (
   newMessage: Message | PartialMessage,
   webhookUrl: string
 ) => {
-  if (oldMessage.author?.bot) return;
+  if (newMessage.author?.bot) return;
   if (oldMessage.content === newMessage.content) return;
 
   let oldContentValue: string = `\`\`\`${oldMessage.content}\`\`\``;

@@ -2,7 +2,6 @@ import { ApplicationCommandType, EmbedBuilder } from 'discord.js';
 import {
   ChatInputCommand,
   Command,
-  CommandReturnType,
   CommandRunParams,
   colors,
   emojis,
@@ -15,34 +14,19 @@ class Ping extends Command<ChatInputCommand> {
       name: 'ping',
       description: 'Get the network information',
       type: ApplicationCommandType.ChatInput,
-      application: true,
-      defered: true,
-      legacy: true,
     });
   }
 
-  async run({
-    client,
-    interaction,
-    message,
-  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
+  async run({ client, interaction }: CommandRunParams<ChatInputCommand>) {
     const uptime = ms(client.uptime || 0);
     const websocketPing = client.ws.ping;
     let botPing: number = 0;
 
-    if (message) {
-      const replyMessage = await message.reply(':ping_pong: Pinging...');
-      botPing = replyMessage.createdTimestamp - message.createdTimestamp;
-
-      await replyMessage.delete();
-    }
-    if (interaction) {
-      const replyMessage = await interaction?.deferReply({
-        ephemeral: true,
-        fetchReply: true,
-      });
-      botPing = replyMessage.createdTimestamp - interaction.createdTimestamp;
-    }
+    const replyMessage = await interaction?.deferReply({
+      ephemeral: true,
+      fetchReply: true,
+    });
+    botPing = replyMessage.createdTimestamp - interaction.createdTimestamp;
 
     const embed = new EmbedBuilder({
       title: 'Pong!',
@@ -70,10 +54,10 @@ class Ping extends Command<ChatInputCommand> {
       color: colors.green,
     });
 
-    return {
+    await interaction.followUp({
       embeds: [embed],
       ephemeral: true,
-    };
+    });
   }
 }
 

@@ -8,14 +8,9 @@
     "esModuleInterop": true,
     "strict": true,
     "incremental": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "noUncheckedIndexedAccess": true
   },
-  "include": [
-    "src/**/*",
-    "environment.d.ts"
-  ],
-  "exclude": [
-    "node_modules/",
-    "dist/"
-  ]
+  "include": ["src/**/*", "environment.d.ts"],
+  "exclude": ["node_modules/", "dist/"]
 }

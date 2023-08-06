@@ -3,13 +3,7 @@ import {
   ApplicationCommandType,
   GuildMember,
 } from 'discord.js';
-import {
-  ChatInputCommand,
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-  embeds,
-} from '../../lib';
+import { ChatInputCommand, Command, CommandRunParams, embeds } from '../../lib';
 import { getServerInfo, getUserInfo, getBotInfo } from '../../modules';
 
 class Info extends Command<ChatInputCommand> {
@@ -18,8 +12,6 @@ class Info extends Command<ChatInputCommand> {
       name: 'info',
       description: 'Get information on a user or server',
       type: ApplicationCommandType.ChatInput,
-      legacy: false,
-      application: true,
 
       options: [
         {
@@ -48,25 +40,18 @@ class Info extends Command<ChatInputCommand> {
       ],
     });
   }
-  async run({
-    interaction,
-    member,
-  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
-    if (!interaction) return { embeds: [embeds.error], ephemeral: true };
-
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === 'user') {
       const targetMember =
-        (interaction.options.getMember('target_user') as GuildMember) || member;
-      return await getUserInfo(interaction, targetMember, false);
+        (interaction.options.getMember('target_user') as GuildMember) ||
+        interaction.member;
+      await getUserInfo(interaction, targetMember, false);
     }
-    if (subcommand === 'server') {
-      return await getServerInfo(interaction, false);
-    }
-    if (subcommand === 'bot') {
-      return await getBotInfo(interaction, false);
-    }
+
+    if (subcommand === 'server') await getServerInfo(interaction, false);
+    if (subcommand === 'bot') await getBotInfo(interaction, false);
   }
 }
 

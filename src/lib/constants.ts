@@ -61,5 +61,3 @@ export const embeds = {
     color: colors.red,
   }),
 };
-
-export const invisChar = ' ';

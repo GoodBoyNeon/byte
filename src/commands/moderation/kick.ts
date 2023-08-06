@@ -3,12 +3,7 @@ import {
   ApplicationCommandType,
   GuildMember,
 } from 'discord.js';
-import {
-  ChatInputCommand,
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-} from '../../lib';
+import { ChatInputCommand, Command, CommandRunParams } from '../../lib';
 import { kick } from '../../modules/';
 
 class Kick extends Command<ChatInputCommand> {
@@ -17,8 +12,6 @@ class Kick extends Command<ChatInputCommand> {
       name: 'kick',
       type: ApplicationCommandType.ChatInput,
       description: 'kick a user',
-      legacy: false,
-      application: true,
       defaultMemberPermissions: ['KickMembers'],
       options: [
         {
@@ -37,9 +30,7 @@ class Kick extends Command<ChatInputCommand> {
     });
   }
 
-  async run({ interaction }: CommandRunParams<ChatInputCommand>): CommandReturnType {
-    if (!interaction) return;
-
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     const target = interaction.options.getMember('user') as GuildMember;
     if (!target) return;
 

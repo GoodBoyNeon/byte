@@ -1,8 +1,8 @@
 import {
   ChatInputCommand,
   Command,
-  CommandReturnType,
   CommandRunParams,
+  ModifiedChatInputCommandInteraction,
   colors,
 } from '../../lib';
 import {
@@ -26,9 +26,6 @@ class Suggestions extends Command<ChatInputCommand> {
       name: 'suggestions',
       type: ApplicationCommandType.ChatInput,
       description: 'Manage suggestions',
-      application: true,
-      legacy: false,
-      defered: true,
       defaultMemberPermissions: ['ManageMessages'],
       options: [
         {
@@ -61,8 +58,7 @@ class Suggestions extends Command<ChatInputCommand> {
     });
   }
 
-  async run({ interaction }: CommandRunParams<ChatInputCommand>): CommandReturnType {
-    if (!interaction) return;
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     await interaction.deferReply({ ephemeral: true });
     const subcommand = interaction.options.getSubcommand();
     const suggestionId = interaction.options.getString('suggestion_id');
@@ -79,7 +75,7 @@ class Suggestions extends Command<ChatInputCommand> {
     const suggestionMsg = await channel.messages.fetch(suggestionId);
 
     if (!isSuggestionMessage(suggestionMsg)) {
-      return {
+      await interaction.followUp({
         embeds: [
           new EmbedBuilder({
             title: 'Invalid Suggestion ID!',
@@ -88,17 +84,22 @@ class Suggestions extends Command<ChatInputCommand> {
           }),
         ],
         ephemeral: true,
-      };
+      });
+      return;
     }
 
     if (subcommand === 'approve') {
-      return await this.updateStatus(suggestionMsg, 'Approved');
+      await this.updateStatus(suggestionMsg, 'Approved', interaction);
     }
     if (subcommand === 'deny') {
-      return await this.updateStatus(suggestionMsg, 'Denied');
+      await this.updateStatus(suggestionMsg, 'Denied', interaction);
     }
   }
-  protected async updateStatus(message: Message, value: SuggestionStatus) {
+  protected async updateStatus(
+    message: Message,
+    value: SuggestionStatus,
+    interaction: ModifiedChatInputCommandInteraction
+  ) {
     const embed = message.embeds[0];
     if (!embed) {
       logger.error('no ');
@@ -116,9 +117,9 @@ class Suggestions extends Command<ChatInputCommand> {
       embeds: [updatedEmbed],
     });
 
-    return {
+    await interaction.followUp({
       content: `Suggestion ${value}!`,
-    };
+    });
   }
 }
 

@@ -5,13 +5,7 @@ import {
   ChannelType,
   EmbedBuilder,
 } from 'discord.js';
-import {
-  ChatInputCommand,
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-  colors,
-} from '../../lib';
+import { ChatInputCommand, Command, CommandRunParams, colors } from '../../lib';
 import { ModloggerType } from '@prisma/client';
 import { configureModlog } from '../../modules';
 import { prisma } from '../..';
@@ -32,9 +26,6 @@ class Configure extends Command<ChatInputCommand> {
       name: 'configure',
       type: ApplicationCommandType.ChatInput,
       description: 'Configure byte as per your liking!',
-      legacy: false,
-      application: true,
-      defered: true,
       options: [
         {
           name: 'modlog',
@@ -79,14 +70,7 @@ class Configure extends Command<ChatInputCommand> {
     });
   }
 
-  async run({
-    interaction,
-    member,
-    guild,
-  }: CommandRunParams<ChatInputCommand>): CommandReturnType {
-    if (!interaction) return;
-    if (!member) return;
-
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     await interaction?.deferReply();
 
     const subcommand = interaction.options.getSubcommand();
@@ -95,7 +79,7 @@ class Configure extends Command<ChatInputCommand> {
       const modlogName = interaction.options.getString(
         'modlog_name'
       ) as ModloggerType;
-      await configureModlog(modlogName, interaction, guild?.id || '');
+      await configureModlog(modlogName, interaction, interaction.guild?.id || '');
     }
     if (subcommand === 'suggestions') {
       const channel = interaction.options.getChannel('channel');
@@ -103,18 +87,19 @@ class Configure extends Command<ChatInputCommand> {
       const attachments = interaction.options.getBoolean('attachments');
       if (channel) {
         if (channel?.type !== ChannelType.GuildText) {
-          return {
+          interaction.followUp({
             embeds: [
               new EmbedBuilder({
                 description: `**${channel} is not a text channel!**`,
                 color: colors.red,
               }),
             ],
-          };
+          });
+          return;
         }
         await prisma.suggestionsConfig.update({
           where: {
-            guildId: guild?.id,
+            guildId: interaction.guild?.id,
           },
           data: {
             channelId: channel.id,
@@ -124,7 +109,7 @@ class Configure extends Command<ChatInputCommand> {
       if (enabled) {
         await prisma.suggestionsConfig.update({
           where: {
-            guildId: guild?.id,
+            guildId: interaction.guild?.id,
           },
           data: {
             enabled,
@@ -135,7 +120,7 @@ class Configure extends Command<ChatInputCommand> {
         await prisma.suggestionsConfig
           .update({
             where: {
-              guildId: guild?.id,
+              guildId: interaction.guild?.id,
             },
             data: {
               attachments,
@@ -144,14 +129,14 @@ class Configure extends Command<ChatInputCommand> {
           .catch(e => logger.error(e));
       }
     }
-    return {
+    await interaction.followUp({
       embeds: [
         new EmbedBuilder({
           title: 'Successfully updated config!',
           color: colors.green,
         }),
       ],
-    };
+    });
   }
 }
 

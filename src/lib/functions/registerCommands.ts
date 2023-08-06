@@ -46,10 +46,6 @@ export const registerCommands = async () => {
 
         commands.push(command);
       }
-      if (command.data.legacy) {
-        client.legacyCommands.set(command.data.name, command);
-        loadedCommands.push({ name: command.data.name, type: 'Legacy Command' });
-      }
     }
   }
 

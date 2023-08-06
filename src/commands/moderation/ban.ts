@@ -3,12 +3,7 @@ import {
   ApplicationCommandType,
   GuildMember,
 } from 'discord.js';
-import {
-  ChatInputCommand,
-  Command,
-  CommandReturnType,
-  CommandRunParams,
-} from '../../lib';
+import { ChatInputCommand, Command, CommandRunParams } from '../../lib';
 import { ban } from '../../modules/';
 
 class Ban extends Command<ChatInputCommand> {
@@ -17,8 +12,6 @@ class Ban extends Command<ChatInputCommand> {
       name: 'ban',
       type: ApplicationCommandType.ChatInput,
       description: 'Ban a user',
-      legacy: false,
-      application: true,
       defaultMemberPermissions: ['BanMembers'],
       options: [
         {
@@ -44,9 +37,7 @@ class Ban extends Command<ChatInputCommand> {
     });
   }
 
-  async run({ interaction }: CommandRunParams<ChatInputCommand>): CommandReturnType {
-    if (!interaction) return;
-
+  async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     const target = interaction.options.getMember('user') as GuildMember;
     if (!target) return;
 

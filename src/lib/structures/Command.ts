@@ -1,11 +1,4 @@
-import { logger } from 'console-wizard';
-import {
-  CommandData,
-  CommandInteractionMap,
-  CommandReturnType,
-  CommandRunParams,
-} from '..';
-import { client } from '../..';
+import { CommandData, CommandInteractionMap, CommandRunParams } from '..';
 
 export class Command<T extends keyof CommandInteractionMap> {
   public data: CommandData;
@@ -14,10 +7,5 @@ export class Command<T extends keyof CommandInteractionMap> {
     this.data = data;
   }
 
-  async run(_params: CommandRunParams<T>): CommandReturnType {
-    if (client.environment === 'development') {
-      logger.info(`New Command: ${this.data.name}`);
-    }
-    return;
-  }
+  async run(_params: CommandRunParams<T>) {}
 }

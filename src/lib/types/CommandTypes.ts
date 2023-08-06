@@ -1,13 +1,7 @@
 import {
   ApplicationCommandType,
   ChatInputApplicationCommandData,
-  Guild,
-  GuildMember,
-  InteractionDeferReplyOptions,
-  InteractionReplyOptions,
-  Message,
   MessageApplicationCommandData,
-  MessageReplyOptions,
   UserApplicationCommandData,
 } from 'discord.js';
 import { Byte } from '../structures/Byte';
@@ -19,17 +13,8 @@ export type UserCommand = ApplicationCommandType.User;
 
 export interface CommandRunParams<T extends keyof CommandInteractionMap> {
   client: Byte;
-  interaction?: CommandInteractionMap[T];
-  message?: Message;
-  args: string[];
-  member: GuildMember | null;
-  guild: Guild | null;
+  interaction: CommandInteractionMap[T];
 }
-export type CommandReplyOptions = MessageReplyOptions &
-  InteractionReplyOptions &
-  InteractionDeferReplyOptions;
-
-export type CommandReturnType = Promise<CommandReplyOptions | undefined>;
 
 type Command<T extends number, U extends object, V extends object> = {
   type: T;
@@ -41,9 +26,6 @@ export type ChatInputCommandData = Command<
   {
     devOnly?: boolean;
     ownerOnly?: boolean;
-    application: true;
-    defered?: boolean;
-    legacy: boolean;
   },
   ChatInputApplicationCommandData
 >;
@@ -53,9 +35,6 @@ export type UserContextMenuData = Command<
   {
     devOnly?: boolean;
     ownerOnly?: boolean;
-    application: true;
-    defered?: boolean;
-    legacy: boolean;
   },
   UserApplicationCommandData
 >;
@@ -65,9 +44,6 @@ export type MessageContextMenuData = Command<
   {
     devOnly?: boolean;
     ownerOnly?: boolean;
-    application: true;
-    defered?: boolean;
-    legacy: boolean;
   },
   MessageApplicationCommandData
 >;
