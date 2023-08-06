@@ -4,6 +4,7 @@ declare global {
       BOT_TOKEN: string;
       ENV: 'production' | 'development';
       DATABASE_URL: string;
+      BARD_API_KEY: string;
     }
   }
 }

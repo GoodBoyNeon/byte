@@ -7,7 +7,6 @@ import {
 
 export type Config = {
   clientOptions: ClientOptions;
-  primaryPrefix: string;
   requiredPermissions: bigint[];
 };
 
@@ -22,7 +21,6 @@ export const config: Config = {
     ],
     partials: [Partials.Message, Partials.Channel, Partials.Reaction],
   },
-  primaryPrefix: '~',
   requiredPermissions: [
     PermissionFlagsBits.SendMessages,
     PermissionFlagsBits.AddReactions,

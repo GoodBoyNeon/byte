@@ -4,7 +4,6 @@ import { join } from 'path';
 export const getFiles = (path: string, categorized: boolean = false): string[] => {
   const files: string[] = [];
 
-  // FS = FileSystem (FSNode representing both files and folders)
   const firstDepthFSNodes = readdirSync(path);
 
   firstDepthFSNodes.forEach(FSNode => {

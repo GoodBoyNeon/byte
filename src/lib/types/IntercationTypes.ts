@@ -1,4 +1,5 @@
 import {
+  AutocompleteInteraction,
   ChatInputCommandInteraction,
   GuildMember,
   MessageContextMenuCommandInteraction,
@@ -19,6 +20,10 @@ export interface ModifiedUserContextMenuCommandInteraction
 export interface ModifiedMessageContextMenuCommandInteraction
   extends MessageContextMenuCommandInteraction {
   targetMember: GuildMember;
+  member: GuildMember;
+}
+
+export interface ModifiedAutocompleteInteraction extends AutocompleteInteraction {
   member: GuildMember;
 }
 

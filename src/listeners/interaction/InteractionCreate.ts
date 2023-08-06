@@ -1,10 +1,12 @@
 import { Interaction, CacheType } from 'discord.js';
 import {
   Listener,
+  ModifiedAutocompleteInteraction,
   ModifiedChatInputCommandInteraction,
   ModifiedMessageContextMenuCommandInteraction,
 } from '../../lib';
 import {
+  handleAutocomplete,
   handleChatInputCommands,
   handleMessageContextMenuCommands,
 } from '../../handlers';
@@ -24,6 +26,9 @@ class InteractionCreate extends Listener<'interactionCreate'> {
       await handleMessageContextMenuCommands(
         interaction as ModifiedMessageContextMenuCommandInteraction
       );
+    }
+    if (interaction.isAutocomplete()) {
+      await handleAutocomplete(interaction as ModifiedAutocompleteInteraction);
     }
   }
 }

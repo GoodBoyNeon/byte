@@ -1,4 +1,9 @@
-import { CommandData, CommandInteractionMap, CommandRunParams } from '..';
+import {
+  CommandAutocompleteParams,
+  CommandData,
+  CommandInteractionMap,
+  CommandRunParams,
+} from '..';
 
 export class Command<T extends keyof CommandInteractionMap> {
   public data: CommandData;
@@ -7,5 +12,6 @@ export class Command<T extends keyof CommandInteractionMap> {
     this.data = data;
   }
 
-  async run(_params: CommandRunParams<T>) {}
+  async run(_params: CommandRunParams<T>): Promise<void> {}
+  async autocomplete(_params: CommandAutocompleteParams): Promise<void> {}
 }

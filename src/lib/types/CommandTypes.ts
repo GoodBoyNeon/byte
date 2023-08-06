@@ -5,7 +5,10 @@ import {
   UserApplicationCommandData,
 } from 'discord.js';
 import { Byte } from '../structures/Byte';
-import { CommandInteractionMap } from './IntercationTypes';
+import {
+  CommandInteractionMap,
+  ModifiedAutocompleteInteraction,
+} from './IntercationTypes';
 
 export type ChatInputCommand = ApplicationCommandType.ChatInput;
 export type MessageCommand = ApplicationCommandType.Message;
@@ -15,6 +18,10 @@ export interface CommandRunParams<T extends keyof CommandInteractionMap> {
   client: Byte;
   interaction: CommandInteractionMap[T];
 }
+export type CommandAutocompleteParams = {
+  client: Byte;
+  interaction: ModifiedAutocompleteInteraction;
+};
 
 type Command<T extends number, U extends object, V extends object> = {
   type: T;

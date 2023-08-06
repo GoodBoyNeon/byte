@@ -73,8 +73,9 @@ class Suggestions extends Command<ChatInputCommand> {
       suggestionsConfig?.channelId || ''
     ) as TextChannel;
     const suggestionMsg = await channel.messages.fetch(suggestionId);
+    const isSuggestionMsg = await isSuggestionMessage(suggestionMsg);
 
-    if (!isSuggestionMessage(suggestionMsg)) {
+    if (!isSuggestionMsg) {
       await interaction.followUp({
         embeds: [
           new EmbedBuilder({

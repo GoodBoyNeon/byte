@@ -1,7 +1,7 @@
-import { config } from 'dotenv';
-import { logger, setWizardConfig } from 'console-wizard';
-import { Byte } from './lib';
 import { PrismaClient } from '@prisma/client';
+import { logger, setWizardConfig } from 'console-wizard';
+import { config } from 'dotenv';
+import { Byte } from './lib';
 
 setWizardConfig({
   includeSN: true,

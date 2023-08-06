@@ -77,6 +77,7 @@ export const updateSuggestionMessage = async (
     const color = getColor(upvotes, downvotes);
 
     const baseEmbed = message.embeds[0];
+    if (!baseEmbed) return;
     const updatedEmbed = EmbedBuilder.from(baseEmbed)
       .spliceFields(1, 1)
       .addFields([

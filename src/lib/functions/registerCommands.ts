@@ -21,31 +21,29 @@ export const registerCommands = async () => {
       }
       if (!command.data.type) return logger.error('Command: No type found!');
 
-      if (command.data.application) {
-        if (command.data.type === ApplicationCommandType.ChatInput) {
-          client.chatInputCommands.set(command.data.name, command);
-          loadedCommands.push({
-            name: command.data.name,
-            type: 'Chat Input Command',
-          });
-        }
-        if (command.data.type === ApplicationCommandType.User) {
-          client.userContextMenus.set(command.data.name, command);
-          loadedCommands.push({
-            name: command.data.name,
-            type: 'User Context Menu',
-          });
-        }
-        if (command.data.type === ApplicationCommandType.Message) {
-          client.messageContextMenus.set(command.data.name, command);
-          loadedCommands.push({
-            name: command.data.name,
-            type: 'Message Context Menu',
-          });
-        }
-
-        commands.push(command);
+      if (command.data.type === ApplicationCommandType.ChatInput) {
+        client.chatInputCommands.set(command.data.name, command);
+        loadedCommands.push({
+          name: command.data.name,
+          type: 'Chat Input Command',
+        });
       }
+      if (command.data.type === ApplicationCommandType.User) {
+        client.userContextMenus.set(command.data.name, command);
+        loadedCommands.push({
+          name: command.data.name,
+          type: 'User Context Menu',
+        });
+      }
+      if (command.data.type === ApplicationCommandType.Message) {
+        client.messageContextMenus.set(command.data.name, command);
+        loadedCommands.push({
+          name: command.data.name,
+          type: 'Message Context Menu',
+        });
+      }
+
+      commands.push(command);
     }
   }
 
@@ -58,8 +56,8 @@ export const registerCommands = async () => {
     );
 
     /* Uncomment to Reset all commands */
-    // await client.application?.commands.set([]);
-    // await devGuild?.commands.set([]);
+    await client.application?.commands.set([]);
+    await devGuild?.commands.set([]);
   }
   if (client.environment === 'production') {
     await client.application?.commands.set(commands.map(c => c.data));

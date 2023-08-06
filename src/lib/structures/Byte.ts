@@ -10,7 +10,6 @@ export class Byte extends Client {
   chatInputCommands: Collection<string, Command<ChatInputCommand>>;
   userContextMenus: Collection<string, Command<UserCommand>>;
   messageContextMenus: Collection<string, Command<MessageCommand>>;
-  legacyCommands: Collection<string, Command<ChatInputCommand>>;
 
   constructor() {
     super(config.clientOptions);
@@ -20,7 +19,6 @@ export class Byte extends Client {
     this.chatInputCommands = new Collection();
     this.userContextMenus = new Collection();
     this.messageContextMenus = new Collection();
-    this.legacyCommands = new Collection();
   }
 
   async deploy() {

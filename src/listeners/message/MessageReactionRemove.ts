@@ -26,7 +26,8 @@ class MessageReactionRemove extends Listener<'messageReactionRemove'> {
       await user.fetch();
     }
 
-    if (isSuggestionMessage(message)) {
+    const isSuggestionMsg = await isSuggestionMessage(message);
+    if (isSuggestionMsg) {
       await updateSuggestionMessage(reaction, user, 'Remove');
     }
   }

@@ -25,7 +25,8 @@ class MessageReactionAdd extends Listener<'messageReactionAdd'> {
       await user.fetch();
     }
 
-    if (isSuggestionMessage(message)) {
+    const isSuggestionMsg = await isSuggestionMessage(message);
+    if (isSuggestionMsg) {
       await updateSuggestionMessage(reaction, user, 'Add');
     }
   }

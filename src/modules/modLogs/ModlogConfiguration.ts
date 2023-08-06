@@ -131,6 +131,8 @@ export class ModlogConfiguration<T extends ModlogConfigurationOptions> {
       const key = args[0];
       const value = args[1];
 
+      if (!key) return;
+
       if (!keys.includes(key)) {
         await m.reply(`Invalid key! The valid ones are: ${keys.join(', ')}`);
         return;
