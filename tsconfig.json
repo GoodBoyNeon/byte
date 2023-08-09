@@ -7,7 +7,6 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "strict": true,
-    "incremental": true,
     "noImplicitAny": false,
     "noUncheckedIndexedAccess": true
   },

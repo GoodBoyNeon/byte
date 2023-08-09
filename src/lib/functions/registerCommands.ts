@@ -64,17 +64,16 @@ export const registerCommands = async () => {
     );
   }
   if (client.environment === 'production') {
-    await client.application?.commands.set([]);
-    // await client.application?.commands.set(
-    //   commands.map(c => {
-    //     // Remove the description from non-chat input commands
-    //     if (c.data.type !== ApplicationCommandType.ChatInput) {
-    //       const { description, ...data } = c.data;
-    //       return data;
-    //     }
-    //     return c.data;
-    //   })
-    // );
+    await client.application?.commands.set(
+      commands.map(c => {
+        // Remove the description from non-chat input commands
+        if (c.data.type !== ApplicationCommandType.ChatInput) {
+          const { description, ...data } = c.data;
+          return data;
+        }
+        return c.data;
+      })
+    );
 
     logger.success(
       `Registered ${commands.length} Application (/) Commands! [Global]`
