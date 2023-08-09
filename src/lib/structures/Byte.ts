@@ -27,8 +27,8 @@ export class Byte extends Client {
     client.user?.setPresence({
       activities: [
         {
-          name: `${client.guilds.cache.size} Servers!`,
-          type: ActivityType.Watching,
+          name: `/help in ${client.guilds.cache.size} Servers!`,
+          type: ActivityType.Listening,
         },
       ],
     });
