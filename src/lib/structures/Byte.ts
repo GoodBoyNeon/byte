@@ -3,6 +3,7 @@ import { ChatInputCommand, Command, MessageCommand, UserCommand } from '..';
 import { config } from '../../config';
 import { handleListeners } from '../../handlers/handleListeners';
 import { client } from '../..';
+import { logger } from 'console-wizard';
 
 export class Byte extends Client {
   environment: string | undefined;
@@ -22,6 +23,7 @@ export class Byte extends Client {
   }
 
   async deploy() {
+    logger.info(`Deployment started for ${client.environment} Environment`);
     await handleListeners();
     await this.login(process.env.BOT_TOKEN);
     client.user?.setPresence({
