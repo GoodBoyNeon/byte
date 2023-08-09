@@ -2,6 +2,7 @@ import { EmbedBuilder, GuildMember } from 'discord.js';
 import { ModifiedCommandInteraction, colors, embeds } from '../../lib';
 import { prisma } from '../..';
 import { logBan, logKick } from '..';
+import internal from 'stream';
 
 export const ban = async (
   target: GuildMember,
@@ -21,6 +22,17 @@ export const ban = async (
     });
     return;
   }
+  if (target.id === interaction.user.id) {
+    await interaction.reply({
+      embeds: [
+        new EmbedBuilder({
+          title: 'You can not ban yourself!',
+          color: colors.red,
+        }),
+      ],
+      ephemeral: true,
+    });
+  }
   if (!interaction.memberPermissions?.has('BanMembers')) {
     await interaction.reply({
       embeds: [embeds.permissionError],
@@ -29,7 +41,12 @@ export const ban = async (
   }
   if (target.roles.highest.position >= interaction.member.roles.highest.position) {
     await interaction.reply({
-      embeds: [embeds.permissionError],
+      embeds: [
+        new EmbedBuilder({
+          title: "Your highest role is lower than the target's highest role!",
+          color: colors.red,
+        }),
+      ],
       ephemeral: true,
     });
   }

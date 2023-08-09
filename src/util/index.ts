@@ -1,5 +1,6 @@
 export * from './booleanToEmoji';
 export * from './askBard';
+export * from './getCachedCommands';
 export * from './capitalize';
 export * from './generateRandomNumber';
 export * from './getFiles';

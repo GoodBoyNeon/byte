@@ -1,4 +1,10 @@
+
 node_modules/
 dist/
+
+.env
 .env.development
 .env.production
+
+tsconfig.tsbuildinfo
+

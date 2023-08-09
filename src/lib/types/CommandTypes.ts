@@ -28,30 +28,26 @@ type Command<T extends number, U extends object, V extends object> = {
 } & U &
   V;
 
+type BaseCommandData = {
+  devOnly?: boolean;
+  ownerOnly?: boolean;
+};
+
 export type ChatInputCommandData = Command<
   ApplicationCommandType.ChatInput,
-  {
-    devOnly?: boolean;
-    ownerOnly?: boolean;
-  },
+  BaseCommandData,
   ChatInputApplicationCommandData
 >;
 
 export type UserContextMenuData = Command<
   ApplicationCommandType.User,
-  {
-    devOnly?: boolean;
-    ownerOnly?: boolean;
-  },
+  BaseCommandData & { description?: string },
   UserApplicationCommandData
 >;
 
 export type MessageContextMenuData = Command<
   ApplicationCommandType.Message,
-  {
-    devOnly?: boolean;
-    ownerOnly?: boolean;
-  },
+  BaseCommandData & { description?: string },
   MessageApplicationCommandData
 >;
 

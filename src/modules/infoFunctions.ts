@@ -32,17 +32,17 @@ export const getBotInfo = async (
     .join(' | ')}`;
 
   const embed = new EmbedBuilder({
-    description: `## ${client.user?.username}\nByte is a general-purpose Discord Bot made to serve your server, with cutting-edge features and little to no bugs!`,
+    description: `## ${client.user?.username}\nByte is a general-purpose Discord Bot made to serve your server, with cutting-edge features and little to no bugs!\n`,
     thumbnail: { url: client.user?.displayAvatarURL() || '' },
     color: colors.green,
     fields: [
       {
-        name: `${emojis.id} ID`,
+        name: `${emojis.id} User ID`,
         value: `${client.user?.id}`,
         inline: true,
       },
       {
-        name: `${emojis.sprout} User ID`,
+        name: `${emojis.sprout} Username`,
         value: `${client.user?.tag}`,
         inline: true,
       },
@@ -79,7 +79,6 @@ export const getBotInfo = async (
     embeds: [embed],
     ephemeral,
     components: [row],
-    content: `${client.guilds.cache.map(g => g.name).join(', ')}`,
   });
 };
 
@@ -135,12 +134,12 @@ export const getUserInfo = async (
       },
       {
         name: `${emojis.public} Created`,
-        value: `< t:${userCreatedTimestamp}: R > `,
+        value: `<t:${userCreatedTimestamp}:R> `,
         inline: false,
       },
       {
         name: `${emojis.members} Joined`,
-        value: `< t:${userJoinedTimestamp}: R > `,
+        value: `<t:${userJoinedTimestamp}:R> `,
         inline: true,
       },
       {
@@ -206,8 +205,8 @@ export const getServerInfo = async (
   const { guild } = interaction;
   if (!guild) return;
 
-  const owner = `< @${guild?.ownerId}> `;
-  const serverCreatedAt = `< t:${Math.floor(guild.createdTimestamp / 1000)}: R > `;
+  const owner = `<@${guild?.ownerId}>`;
+  const serverCreatedAt = `<t:${Math.floor(guild.createdTimestamp / 1000)}:R>`;
 
   const totalChannels = guild.channels.cache.size;
 
@@ -325,35 +324,6 @@ ${emojis.forums} Forum Channels: ${numForumChannel}
   });
 };
 
-type Badge = {
-  ActiveDeveloper: string;
-  BugHunterLevel1: string;
-  BugHunterLevel2: string;
-  PremiumEarlySupporter: string;
-  Partner: string;
-  Staff: string;
-  HypeSquadOnlineHouse1: string;
-  HypeSquadOnlineHouse2: string;
-  HypeSquadOnlineHouse3: string;
-  Hypesquad: string;
-  CertifiedModerator: string;
-  VerifiedDeveloper: string;
-};
 const getBadges = (userFlags: string[]) => {
-  const badge: Badge = {
-    ActiveDeveloper: '<:activedeveloperbadge:1116725876709662862> ',
-    BugHunterLevel1: '<:discordbughunter:1116725897781841993> ',
-    BugHunterLevel2: '<:discordgoldbughunter:1116725916056424478> ',
-    PremiumEarlySupporter: '<:earlysupporter:1116725887732305980> ',
-    Partner: '<:partneredserverowner:1116725854282731543> ',
-    Staff: '<:discordstaff:1116725872498593814> ',
-    HypeSquadOnlineHouse1: '<:hypesquadbravery:1116725880627150881> ',
-    HypeSquadOnlineHouse2: '<:hypesquadbrilliance:1116725893243609171> ',
-    HypeSquadOnlineHouse3: '<:hypesquadbalance:1116725905428066444> ',
-    Hypesquad: '<:hypesquadevents:1116737095420104815>',
-    CertifiedModerator: '<:certifiedmoderator:1116725864026083398> ',
-    VerifiedDeveloper: '<:earlyverifiedbotdeveloper:1116725847106261102>',
-  };
-
-  return userFlags.map((flagName: string) => badge[flagName as keyof Badge]);
+  return userFlags.map((flagName: string) => emojis.badges[flagName]);
 };

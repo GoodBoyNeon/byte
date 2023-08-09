@@ -39,9 +39,23 @@ export const emojis = {
   forums: '<:forums:1131575144775688292>',
   greenBox: '<:greenbox:1134837774172819496>',
   redBox: '<:redbox:1134837771748511776>',
-  upvote: '<:upvote:1134841387955781632>',
+  upvote: '<:upvote:1138709561507852359>',
   downvote: '<:downvote:1134841385166577724>',
-};
+  badges: {
+    ActiveDeveloper: '<:ActiveDeveloper:1138706500769022093>',
+    BugHunterLevel1: '<:BugHunterLevel1:1138710294370201662>',
+    BugHunterLevel2: '<:BugHunterLevel2:1138710297096503323>',
+    PremiumEarlySupporter: '<:PremiumEarlySupporter:1138711374650953799>',
+    Partner: '<:Partner:1138711382922121287>',
+    Staff: '<:Staff:1138711399481225236>',
+    HypeSquadOnlineHouse1: '<:HypeSquadOnlineHouse1:1138711389469417573>',
+    HypeSquadOnlineHouse2: '<:HypeSquadOnlineHouse2:1138711402094280744>',
+    HypeSquadOnlineHouse3: '<:HypeSquadOnlineHouse3:1138711378841059338>',
+    Hypesquad: '<:HypeSquad:1138712452335403018>',
+    CertifiedModerator: '<:CertifiedModerator:1138711371966582855>',
+    VerifiedDeveloper: '<:VerifiedBotDeveloper:1138711394699714651>',
+  },
+} as const;
 
 export const embeds = {
   error: new EmbedBuilder({

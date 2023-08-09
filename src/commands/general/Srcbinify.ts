@@ -6,6 +6,7 @@ class Srcbinify extends Command<MessageCommand> {
   constructor() {
     super({
       name: 'srcbinify',
+      description: "Generate a sourceb.in link for the message's content",
       type: ApplicationCommandType.Message,
     });
   }

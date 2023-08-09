@@ -49,18 +49,32 @@ export const registerCommands = async () => {
 
   if (client.environment == 'development') {
     const devGuild = client.guilds.cache.get(guildIds.devGuildId);
-    await devGuild?.commands.set(commands.map(c => c.data));
+    await devGuild?.commands.set(
+      commands.map(c => {
+        // Remove the description from non-chat input commands
+        if (c.data.type !== ApplicationCommandType.ChatInput) {
+          const { description, ...data } = c.data;
+          return data;
+        }
+        return c.data;
+      })
+    );
 
     logger.success(
       `Registered ${commands.length} Application (/) Commands! [Guild]`
     );
-
-    /* Uncomment to Reset all commands */
-    // await client.application?.commands.set([]);
-    // await devGuild?.commands.set([]);
   }
   if (client.environment === 'production') {
-    await client.application?.commands.set(commands.map(c => c.data));
+    await client.application?.commands.set(
+      commands.map(c => {
+        // Remove the description from non-chat input commands
+        if (c.data.type !== ApplicationCommandType.ChatInput) {
+          const { description, ...data } = c.data;
+          return data;
+        }
+        return c.data;
+      })
+    );
 
     logger.success(
       `Registered ${commands.length} Application (/) Commands! [Global]`

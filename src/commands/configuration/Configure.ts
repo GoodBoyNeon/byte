@@ -26,6 +26,7 @@ class Configure extends Command<ChatInputCommand> {
       name: 'configure',
       type: ApplicationCommandType.ChatInput,
       description: 'Configure byte as per your liking!',
+      defaultMemberPermissions: ['ManageGuild'],
       options: [
         {
           name: 'modlog',
