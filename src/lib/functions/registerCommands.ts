@@ -46,7 +46,7 @@ export const registerCommands = async () => {
       commands.push(command);
     }
   }
-
+  await client.application.commands.set([])
   if (client.environment == 'development') {
     const devGuild = client.guilds.cache.get(guildIds.devGuildId);
     await devGuild?.commands.set(
