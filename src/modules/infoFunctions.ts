@@ -324,6 +324,8 @@ ${emojis.forums} Forum Channels: ${numForumChannel}
   });
 };
 
+type BadgeKey = keyof typeof emojis.badges;
+
 const getBadges = (userFlags: string[]) => {
-  return userFlags.map((flagName: string) => emojis.badges[flagName]);
+  return userFlags.map((flagName: string) => emojis.badges[flagName as BadgeKey]);
 };
