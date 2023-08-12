@@ -1,13 +1,8 @@
-import {
-  ChatInputCommand,
-  Command,
-  CommandRunParams,
-  ModifiedChatInputCommandInteraction,
-  colors,
-} from '../../lib';
+import { ChatInputCommand, Command, CommandRunParams, colors } from '../../lib';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  ChatInputCommandInteraction,
   EmbedBuilder,
   Message,
   TextChannel,
@@ -99,7 +94,7 @@ class Suggestions extends Command<ChatInputCommand> {
   protected async updateStatus(
     message: Message,
     value: SuggestionStatus,
-    interaction: ModifiedChatInputCommandInteraction
+    interaction: ChatInputCommandInteraction<'cached'>
   ) {
     const embed = message.embeds[0];
     if (!embed) {

@@ -3,18 +3,18 @@ import {
   ButtonBuilder,
   ButtonStyle,
   ChannelType,
+  ChatInputCommandInteraction,
   ColorResolvable,
   EmbedBuilder,
   GuildMember,
 } from 'discord.js';
 import getColor from 'get-image-colors';
 import { colors, emojis, inviteLink, supportServerInvite } from '../lib/';
-import { ModifiedChatInputCommandInteraction } from '../lib';
 import { client } from '..';
 import { cpus } from 'os';
 
 export const getBotInfo = async (
-  interaction: ModifiedChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction<'cached'>,
   ephemeral: boolean = false
 ) => {
   const memoryUsage = `${Math.round(
@@ -83,7 +83,7 @@ export const getBotInfo = async (
 };
 
 export const getUserInfo = async (
-  interaction: ModifiedChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction<'cached'>,
   member: GuildMember,
   ephemeral: boolean = false
 ) => {
@@ -199,7 +199,7 @@ export const getUserInfo = async (
 };
 
 export const getServerInfo = async (
-  interaction: ModifiedChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction<'cached'>,
   ephemeral: boolean = false
 ) => {
   const { guild } = interaction;

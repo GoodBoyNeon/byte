@@ -1,8 +1,8 @@
+import { UserContextMenuCommandInteraction } from 'discord.js';
 import { client } from '..';
-import { ModifiedUserContextMenuCommandInteraction } from '../lib';
 
 export const handleUserContextMenuCommands = async (
-  interaction: ModifiedUserContextMenuCommandInteraction
+  interaction: UserContextMenuCommandInteraction<'cached'>
 ) => {
   const command = client.userContextMenus.get(interaction.commandName);
 

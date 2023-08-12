@@ -9,5 +9,5 @@ export * from './structures/Listener';
 
 export * from './types/CommandTypes';
 export * from './types/ConfigurationTypes';
-export * from './types/IntercationTypes';
+export * from './types/InteractionTypes';
 export * from './types/ListenerTypes';

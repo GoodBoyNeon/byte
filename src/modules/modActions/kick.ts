@@ -1,11 +1,11 @@
-import { EmbedBuilder, GuildMember } from 'discord.js';
-import { ModifiedCommandInteraction, colors, embeds } from '../../lib';
+import { CommandInteraction, EmbedBuilder, GuildMember } from 'discord.js';
+import { colors, embeds } from '../../lib';
 import { prisma } from '../..';
 import { logKick } from '../modLogs/logKick';
 
 export const kick = async (
   target: GuildMember,
-  interaction: ModifiedCommandInteraction,
+  interaction: CommandInteraction<'cached'>,
   reason?: string
 ) => {
   if (!target.kickable) {

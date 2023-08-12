@@ -1,8 +1,8 @@
+import { AutocompleteInteraction } from 'discord.js';
 import { client } from '..';
-import { ModifiedAutocompleteInteraction } from '../lib';
 
 export const handleAutocomplete = async (
-  interaction: ModifiedAutocompleteInteraction
+  interaction: AutocompleteInteraction<'cached'>
 ) => {
   const command = client.chatInputCommands.get(interaction.commandName);
 

@@ -1,18 +1,22 @@
 import {
   ApplicationCommandType,
+  AutocompleteInteraction,
   ChatInputApplicationCommandData,
   MessageApplicationCommandData,
   UserApplicationCommandData,
 } from 'discord.js';
 import { Byte } from '../structures/Byte';
-import {
-  CommandInteractionMap,
-  ModifiedAutocompleteInteraction,
-} from './IntercationTypes';
+import { CommandInteractionMap } from './InteractionTypes';
 
 export type ChatInputCommand = ApplicationCommandType.ChatInput;
-export type MessageCommand = ApplicationCommandType.Message;
 export type UserCommand = ApplicationCommandType.User;
+export type MessageCommand = ApplicationCommandType.Message;
+
+export interface CommandTypeMap {
+  [ApplicationCommandType.ChatInput]: ApplicationCommandType.ChatInput;
+  [ApplicationCommandType.User]: ApplicationCommandType.User;
+  [ApplicationCommandType.Message]: ApplicationCommandType.Message;
+}
 
 export interface CommandRunParams<T extends keyof CommandInteractionMap> {
   client: Byte;
@@ -20,7 +24,7 @@ export interface CommandRunParams<T extends keyof CommandInteractionMap> {
 }
 export type CommandAutocompleteParams = {
   client: Byte;
-  interaction: ModifiedAutocompleteInteraction;
+  interaction: AutocompleteInteraction<'cached'>;
 };
 
 type Command<T extends number, U extends object, V extends object> = {

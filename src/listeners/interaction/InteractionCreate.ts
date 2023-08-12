@@ -1,15 +1,10 @@
-import { Interaction, CacheType } from 'discord.js';
-import {
-  Listener,
-  ModifiedAutocompleteInteraction,
-  ModifiedChatInputCommandInteraction,
-  ModifiedMessageContextMenuCommandInteraction,
-} from '../../lib';
+import { CacheType, Interaction } from 'discord.js';
 import {
   handleAutocomplete,
   handleChatInputCommands,
   handleMessageContextMenuCommands,
 } from '../../handlers';
+import { Listener } from '../../lib';
 
 class InteractionCreate extends Listener<'interactionCreate'> {
   constructor() {
@@ -17,18 +12,16 @@ class InteractionCreate extends Listener<'interactionCreate'> {
   }
 
   protected async run(interaction: Interaction<CacheType>): Promise<void> {
+    if (!interaction.inCachedGuild()) return;
+
     if (interaction.isChatInputCommand()) {
-      await handleChatInputCommands(
-        interaction as ModifiedChatInputCommandInteraction
-      );
+      await handleChatInputCommands(interaction);
     }
     if (interaction.isMessageContextMenuCommand()) {
-      await handleMessageContextMenuCommands(
-        interaction as ModifiedMessageContextMenuCommandInteraction
-      );
+      await handleMessageContextMenuCommands(interaction);
     }
     if (interaction.isAutocomplete()) {
-      await handleAutocomplete(interaction as ModifiedAutocompleteInteraction);
+      await handleAutocomplete(interaction);
     }
   }
 }

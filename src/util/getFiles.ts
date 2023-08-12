@@ -20,6 +20,5 @@ export const getFiles = (path: string, categorized: boolean = false): string[] =
       return files;
     });
   });
-  console.log(files);
   return files;
 };

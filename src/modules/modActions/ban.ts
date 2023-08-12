@@ -1,12 +1,11 @@
-import { EmbedBuilder, GuildMember } from 'discord.js';
-import { ModifiedCommandInteraction, colors, embeds } from '../../lib';
+import { CommandInteraction, EmbedBuilder, GuildMember } from 'discord.js';
+import { colors, embeds } from '../../lib';
 import { prisma } from '../..';
 import { logBan, logKick } from '..';
-import internal from 'stream';
 
 export const ban = async (
   target: GuildMember,
-  interaction: ModifiedCommandInteraction,
+  interaction: CommandInteraction<'cached'>,
   deleteMsg: boolean,
   reason?: string
 ) => {

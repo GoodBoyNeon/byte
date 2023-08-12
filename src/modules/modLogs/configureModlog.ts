@@ -1,11 +1,12 @@
 import { ModloggerType } from '@prisma/client';
 import { ModlogConfiguration } from './ModlogConfiguration';
-import { ModifiedChatInputCommandInteraction, embeds } from '../../lib';
+import { embeds } from '../../lib';
 import { getOrCreateGuildConfig } from '../../util';
+import { ChatInputCommandInteraction } from 'discord.js';
 
 export const configureModlog = async (
   modlogName: ModloggerType,
-  interaction: ModifiedChatInputCommandInteraction,
+  interaction: ChatInputCommandInteraction<'cached'>,
   guildId: string
 ) => {
   const modlogger = await getOrCreateGuildConfig({

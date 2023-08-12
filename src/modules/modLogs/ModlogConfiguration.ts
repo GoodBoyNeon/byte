@@ -1,13 +1,8 @@
 import { logger } from 'console-wizard';
 import { client, prisma } from '../..';
 import { ModlogConfigurationOptions } from '../../lib/';
-import { ChannelType, EmbedBuilder } from 'discord.js';
-import {
-  ModifiedChatInputCommandInteraction,
-  colors,
-  embeds,
-  emojis,
-} from '../../lib';
+import { ChannelType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js';
+import { colors, embeds, emojis } from '../../lib';
 
 export class ModlogConfiguration<T extends ModlogConfigurationOptions> {
   options: T;
@@ -70,7 +65,7 @@ export class ModlogConfiguration<T extends ModlogConfigurationOptions> {
       if (typeof error == 'string') logger.error(error);
     }
   }
-  async init(interaction: ModifiedChatInputCommandInteraction) {
+  async init(interaction: ChatInputCommandInteraction<'cached'>) {
     const isEnabled = this.options.enabled ? emojis.tick : emojis.x;
 
     const keys = ['enabled', 'channel'];

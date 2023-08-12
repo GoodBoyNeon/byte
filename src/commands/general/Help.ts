@@ -2,6 +2,7 @@ import {
   ApplicationCommandOptionChoiceData,
   ApplicationCommandOptionType,
   ApplicationCommandType,
+  ChatInputCommandInteraction,
   EmbedBuilder,
 } from 'discord.js';
 import {
@@ -9,7 +10,6 @@ import {
   Command,
   CommandAutocompleteParams,
   CommandRunParams,
-  ModifiedChatInputCommandInteraction,
   colors,
   emojis,
 } from '../../lib';
@@ -59,7 +59,7 @@ class Help extends Command<ChatInputCommand> {
     await interaction.respond(commands);
   }
 
-  async helpMenu(interaction: ModifiedChatInputCommandInteraction) {
+  async helpMenu(interaction: ChatInputCommandInteraction<'cached'>) {
     const commands: Commands[] = [];
 
     const categories = getFiles(`${__dirname}/../`, false).map(p =>
@@ -111,7 +111,7 @@ class Help extends Command<ChatInputCommand> {
   }
   async commandHelpMenu(
     command: string,
-    interaction: ModifiedChatInputCommandInteraction
+    interaction: ChatInputCommandInteraction<'cached'>
   ) {
     const cachedCommands = getCachedCommands(interaction.guild);
     const cachedCommand = cachedCommands?.find(c => c.name === command);
@@ -184,10 +184,10 @@ class Help extends Command<ChatInputCommand> {
     return commandType === 1
       ? 'Slash Command'
       : commandType === 2
-        ? 'User Context Menu Command'
-        : commandType === 3
-          ? 'Message Context Menu Command'
-          : null;
+      ? 'User Context Menu Command'
+      : commandType === 3
+      ? 'Message Context Menu Command'
+      : null;
   }
 }
 

@@ -1,8 +1,8 @@
+import { ChatInputCommandInteraction } from 'discord.js';
 import { client } from '..';
-import { ModifiedChatInputCommandInteraction } from '../lib';
 
 export const handleChatInputCommands = async (
-  interaction: ModifiedChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction<'cached'>
 ) => {
   const command = client.chatInputCommands.get(interaction.commandName);
 
