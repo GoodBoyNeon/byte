@@ -5,9 +5,15 @@ import {
   PartialUser,
   User,
 } from 'discord.js';
-import { emojis } from '../../lib';
+import { SuggestionStatus, emojis } from '../../lib';
 import { getColor, getImpression } from '..';
 import { logger } from 'console-wizard';
+
+export const suggestionStatusMsg: Record<SuggestionStatus, string> = {
+  Approved: `${emojis.tick} Approved`,
+  Denied: `${emojis.x} Denied`,
+  UnderReview: `${emojis.forums} Under Review`,
+};
 
 export const avoidBothReactions = async (
   reaction: MessageReaction | PartialMessageReaction,
@@ -15,6 +21,10 @@ export const avoidBothReactions = async (
   isUpvote: boolean,
   isDownvote: boolean
 ) => {
+  if (user.partial) {
+    logger.warn('PartialUser in updateSuggestionMessage.ts');
+    return;
+  }
   const { message } = reaction;
 
   const downvoteReaction = message.reactions.cache.find(
@@ -29,11 +39,22 @@ export const avoidBothReactions = async (
   );
   const upvoteReactionFromUser =
     upvoteReaction && message.reactions.cache.find(r => r.users.cache.get(user.id));
+
+  /* Avoid the author from reacting */
+  const suggestionAuthor = reaction.message.mentions.users?.first();
+  if (suggestionAuthor?.id === user.id) {
+    const reaction = isUpvote
+      ? upvoteReaction
+      : isDownvote
+        ? downvoteReaction
+        : undefined;
+
+    if (!reaction) return;
+    reaction.users.remove(user);
+  }
+
+  /* Avoid one user from reacting to both upvote and downvote */
   if (isUpvote && downvoteReactionFromUser) {
-    if (user.partial) {
-      logger.warn('PartialUser in updateSuggestionMessage.ts');
-      return;
-    }
     message.reactions.cache
       .find(r => r.emoji.toString() === emojis.downvote)
       ?.users.remove(user);

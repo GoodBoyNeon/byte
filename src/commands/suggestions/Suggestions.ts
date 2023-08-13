@@ -1,4 +1,10 @@
-import { ChatInputCommand, Command, CommandRunParams, colors } from '../../lib';
+import {
+  ChatInputCommand,
+  Command,
+  CommandRunParams,
+  colors,
+  emojis,
+} from '../../lib';
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
@@ -8,7 +14,7 @@ import {
   TextChannel,
 } from 'discord.js';
 import { prisma } from '../..';
-import { isSuggestionMessage } from '../../modules';
+import { isSuggestionMessage, suggestionStatusMsg } from '../../modules';
 import {
   SuggestionStatus,
   SuggestionStatusField,
@@ -47,6 +53,12 @@ class Suggestions extends Command<ChatInputCommand> {
               description: 'Id of the suggestion',
               required: true,
             },
+            {
+              name: 'reason',
+              type: ApplicationCommandOptionType.String,
+              description: 'Why did you deny the suggestion?',
+              required: true,
+            },
           ],
         },
       ],
@@ -57,6 +69,7 @@ class Suggestions extends Command<ChatInputCommand> {
     await interaction.deferReply({ ephemeral: true });
     const subcommand = interaction.options.getSubcommand();
     const suggestionId = interaction.options.getString('suggestion_id');
+    const reason = interaction.options.getString('reason') ?? 'No reason provided';
     if (!suggestionId) return;
 
     const suggestionsConfig = await prisma.suggestionsConfig.findUnique({
@@ -88,19 +101,25 @@ class Suggestions extends Command<ChatInputCommand> {
       await this.updateStatus(suggestionMsg, 'Approved', interaction);
     }
     if (subcommand === 'deny') {
-      await this.updateStatus(suggestionMsg, 'Denied', interaction);
+      await this.updateStatus(suggestionMsg, `Denied`, interaction, reason);
     }
   }
   protected async updateStatus(
     message: Message,
-    value: SuggestionStatus,
-    interaction: ChatInputCommandInteraction<'cached'>
+    status: SuggestionStatus,
+    interaction: ChatInputCommandInteraction<'cached'>,
+    reason?: string
   ) {
     const embed = message.embeds[0];
     if (!embed) {
-      logger.error('no ');
+      logger.error('no embed found!');
       return;
     }
+
+    const value =
+      status === 'Denied'
+        ? `${suggestionStatusMsg[status]}\n**Reason:** ${reason}`
+        : suggestionStatusMsg[status];
 
     const statusField: SuggestionStatusField = {
       name: 'Status',
@@ -113,8 +132,18 @@ class Suggestions extends Command<ChatInputCommand> {
       embeds: [updatedEmbed],
     });
 
+    const upvoteReaction = message.reactions.cache.find(
+      r => r.emoji.toString() === emojis.upvote
+    );
+    const downvoteReaction = message.reactions.cache.find(
+      r => r.emoji.toString() === emojis.downvote
+    );
+
+    await upvoteReaction?.remove();
+    await downvoteReaction?.remove();
+
     await interaction.followUp({
-      content: `Suggestion ${value}!`,
+      content: `${value.split(' ')[0]} Suggestion ${status} !`,
     });
   }
 }

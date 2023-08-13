@@ -6,7 +6,7 @@ export const messageDeleteLogger = async (
   message: Message<true>,
   webhookUrl: string
 ) => {
-  if (message.author.bot) return;
+  if (message.author?.bot) return;
   let contentValue: string = `\`\`\`${message.content}\`\`\``;
 
   if (contentValue?.length > 1024) {

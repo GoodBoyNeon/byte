@@ -11,3 +11,5 @@ export * from './types/CommandTypes';
 export * from './types/ConfigurationTypes';
 export * from './types/InteractionTypes';
 export * from './types/ListenerTypes';
+export * from './types/helpers';
+export * from './types/SuggestionTypes';

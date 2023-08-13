@@ -1,6 +1,6 @@
-export type SuggestionStatus = 'Approved' | 'Denied' | 'Under Review';
+export type SuggestionStatus = 'Approved' | 'Denied' | 'UnderReview';
 
 export type SuggestionStatusField = {
   name: 'Status';
-  value: SuggestionStatus;
+  value: string;
 };

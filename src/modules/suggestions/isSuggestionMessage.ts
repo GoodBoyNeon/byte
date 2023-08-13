@@ -9,7 +9,7 @@ export const isSuggestionMessage = async (message: Message | PartialMessage) => 
   });
   return (
     message.author?.id === client.user?.id &&
-    message.embeds[0]?.footer?.text === `Suggestion ID: ${message.id}` &&
-    message.channelId === suggestionsConfig?.channelId
+    message.channelId === suggestionsConfig?.channelId &&
+    message.embeds[0]?.data.title === 'New Suggestion'
   );
 };

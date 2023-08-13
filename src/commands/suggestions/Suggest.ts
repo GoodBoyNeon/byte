@@ -13,7 +13,7 @@ import {
 } from '../../lib';
 import { client, prisma } from '../..';
 import { SuggestionStatus } from '../../lib/types/SuggestionTypes';
-import { getColor, getImpression } from '../../modules';
+import { getColor, getImpression, suggestionStatusMsg } from '../../modules';
 
 class Suggest extends Command<ChatInputCommand> {
   constructor() {
@@ -92,7 +92,8 @@ class Suggest extends Command<ChatInputCommand> {
       return;
     }
 
-    const status: SuggestionStatus = 'Under Review';
+    const status: SuggestionStatus = 'UnderReview';
+    const value = suggestionStatusMsg[status];
 
     const impression = getImpression(1, 1);
     const color = getColor(1, 1);
@@ -103,15 +104,12 @@ class Suggest extends Command<ChatInputCommand> {
         name: interaction.user.username,
         iconURL: interaction.member.displayAvatarURL(),
       },
-      thumbnail: {
-        url: interaction.member.displayAvatarURL(),
-      },
       title: 'New Suggestion',
       description: suggestion || '',
       fields: [
         {
           name: 'Status',
-          value: status,
+          value,
         },
         {
           name: 'Impressions',
@@ -124,19 +122,21 @@ class Suggest extends Command<ChatInputCommand> {
     });
 
     const message = await channel?.send({
+      content: `*Suggestion by ${interaction.member}*`,
       embeds: [embed],
     });
 
-    await message?.edit({
-      embeds: [
-        embed.setFooter({
-          text: `Suggestion ID: ${message.id}`,
-        }),
-      ],
-    });
+    // await message?.edit({
+    //   embeds: [
+    //     embed.setFooter({
+    //       text: `Suggestion ID: ${message.id} | Author ID: ${interaction.user.id}`,
+    //     }),
+    //   ],
+    // });
 
     await message?.react(emojis.upvote);
     await message?.react(emojis.downvote);
+
     await message?.startThread({
       name: `${interaction.user.username}'s Suggestion`,
       reason: 'Suggestion',
