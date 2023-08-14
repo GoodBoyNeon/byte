@@ -9,6 +9,6 @@
     "strict": true,
     "noUncheckedIndexedAccess": true
   },
-  "include": ["src/**/*", "environment.d.ts"],
+  "include": ["src/**/*", "environment.d.ts", "reset.d.ts"],
   "exclude": ["node_modules/", "dist/"]
 }

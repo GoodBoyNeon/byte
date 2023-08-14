@@ -4,6 +4,7 @@ import {
   ApplicationCommandType,
   ChatInputCommandInteraction,
   EmbedBuilder,
+  EmojiIdentifierResolvable,
 } from 'discord.js';
 import {
   ChatInputCommand,
@@ -13,7 +14,13 @@ import {
   colors,
   emojis,
 } from '../../lib';
-import { capitalize, getCachedCommands, getFiles } from '../../util';
+import {
+  askGPT,
+  capitalize,
+  commandCategoryEmojiCache,
+  getCachedCommands,
+  getFiles,
+} from '../../util';
 import path from 'path';
 import { client } from '../..';
 
@@ -65,6 +72,9 @@ class Help extends Command<ChatInputCommand> {
     const categories = getFiles(`${__dirname}/../`, false).map(p =>
       path.basename(p)
     );
+    if (commandCategoryEmojiCache.size === 0) {
+      await this.cacheCategoryEmoji(categories);
+    }
     for (const cat of categories) {
       const commandNames = getFiles(`${__dirname}/../${cat}`).map(p =>
         path
@@ -79,7 +89,9 @@ class Help extends Command<ChatInputCommand> {
     }
     let description: string = '';
     commands.forEach(command => {
-      description += `## ${command.category} (${command.commandNames.length})\n`;
+      description += `## ${
+        commandCategoryEmojiCache.get(command.category.toLowerCase()) ?? ''
+      } ${command.category} (${command.commandNames.length})\n`;
 
       command.commandNames.forEach((commandName, i) => {
         description += `\`${commandName}\``;
@@ -184,10 +196,37 @@ class Help extends Command<ChatInputCommand> {
     return commandType === 1
       ? 'Slash Command'
       : commandType === 2
-      ? 'User Context Menu Command'
-      : commandType === 3
-      ? 'Message Context Menu Command'
-      : null;
+        ? 'User Context Menu Command'
+        : commandType === 3
+          ? 'Message Context Menu Command'
+          : null;
+  }
+
+  async cacheCategoryEmoji(categories: string[]) {
+    const prompt = `Generate an emoji that best matches each of the following word separated by commas:\n${categories
+      .join(', ')
+      .trim()
+      .slice(
+        0,
+        -1
+      )}\nUse a JSON array for the emojis. ONLY INCLUDE THE EMOJI, NO OTHER TEXT.`;
+
+    const res = await askGPT(prompt);
+    const emojisJSON = res.choices[0]?.text.replaceAll("'", '"');
+    if (!emojisJSON) return;
+    try {
+      const matchRegExp = /\[.*?\]/;
+      const emojisJSONMatch = emojisJSON.match(matchRegExp);
+      if (!emojisJSONMatch) return;
+
+      (JSON.parse(emojisJSONMatch[0]) as string[]).forEach(
+        (emoji: EmojiIdentifierResolvable, i) => {
+          commandCategoryEmojiCache.set(categories[i]?.toLowerCase() ?? '', emoji);
+        }
+      );
+    } catch (error) {
+      this.cacheCategoryEmoji(categories);
+    }
   }
 }
 

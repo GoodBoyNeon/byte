@@ -19,6 +19,7 @@
     "dbgen": "prisma format && prisma generate"
   },
   "devDependencies": {
+    "@total-typescript/ts-reset": "^0.4.2",
     "@types/get-image-colors": "^4.0.2",
     "@types/ms": "^0.7.31",
     "@types/node": "^20.4.1",
