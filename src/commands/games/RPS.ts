@@ -21,7 +21,7 @@ import { generateRandomNumber } from '../../util';
 
 type RPSFunctionArgs = {
   interaction: ChatInputCommandInteraction<'cached'>;
-  opponent: GuildMember | 'Bot';
+  opponent: GuildMember;
   userScore: number;
   opponentScore: number;
   reply: InteractionResponse<true>;
@@ -86,36 +86,24 @@ class RPS extends Command<ChatInputCommand> {
   async run({
     interaction,
   }: CommandRunParams<ApplicationCommandType.ChatInput>): Promise<void> {
-    const opponent = interaction.options.getMember('opponent') || 'Bot';
+    const opponent =
+      interaction.options.getMember('opponent') || interaction.guild.members.me;
+    if (!opponent) return;
     const maxRounds = interaction.options.getInteger('rounds') || 1;
 
-    // eslint-disable-next-line prefer-const
     const curRound = 1;
 
-    if (typeof opponent !== 'string') {
-      if (interaction.member.id === opponent.id) {
-        await interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setTitle('You can not play rock paper scissors with yourself!')
-              .setFooter({
-                text: 'Tip: You can always play with the bot by not specifying an opponent, if you have no friends',
-              }),
-          ],
-        });
-        return;
-      }
-      if (opponent.user.bot) {
-        await interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setTitle('You can not play rock paper scissors with Discord Bots!')
-              .setColor(colors.red),
-          ],
-          ephemeral: true,
-        });
-        return;
-      }
+    if (interaction.member.id === opponent?.id) {
+      await interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('You can not play rock paper scissors with yourself!')
+            .setFooter({
+              text: 'Tip: You can always play with the bot by not specifying an opponent, if you have no friends',
+            }),
+        ],
+      });
+      return;
     }
     const reply = await interaction.deferReply();
 
@@ -123,7 +111,7 @@ class RPS extends Command<ChatInputCommand> {
     const opponentScore = 0;
     const baseEmbed = this.getBaseEmbed(interaction, opponent);
     await interaction.followUp('Starting game...');
-    if (opponent !== 'Bot') {
+    if (!opponent?.user.bot) {
       const embed = EmbedBuilder.from(baseEmbed)
         .setDescription(
           `${baseEmbed.data.description}\nPlease request ${opponent} to accept the invite by clicking the button below.`
@@ -224,7 +212,7 @@ class RPS extends Command<ChatInputCommand> {
       embeds: [startEmbed],
       components: [row],
     });
-    const ids = [interaction.user.id, `${opponent === 'Bot' ? null : opponent.id}`];
+    const ids = [interaction.user.id, opponent.id];
     const collector = reply.createMessageComponentCollector({
       time: 30 * 1000,
       componentType: ComponentType.Button,
@@ -240,7 +228,7 @@ class RPS extends Command<ChatInputCommand> {
           choice => choice.type === i.customId.split('-').at(-1)
         );
       }
-      if (opponent === 'Bot') {
+      if (opponent.user.bot) {
         opponentChoice = choiceMap[generateRandomNumber(1, 3) || 0];
       } else if (i.user.id === opponent.id) {
         opponentChoice = choiceMap.find(
@@ -248,7 +236,7 @@ class RPS extends Command<ChatInputCommand> {
         );
       }
 
-      if (opponent !== 'Bot' && (!userChoice || !opponentChoice)) {
+      if (!opponent.user.bot && (!userChoice || !opponentChoice)) {
         const embed = EmbedBuilder.from(startEmbed).setFields({
           name: 'Status',
           value: `
@@ -265,7 +253,7 @@ ${opponent}: **${opponent ? 'Chosen' : 'Pending'}**
 
       if (userChoice && opponentChoice) {
         let status: string = '';
-        let winner: GuildMember | 'Bot' | null = null;
+        let winner: GuildMember | null = null;
         if (userChoice?.defeats === opponentChoice) {
           status = `${interaction.member} Wins`;
           winner = interaction.member;
@@ -284,10 +272,8 @@ ${opponent}: **${opponent ? 'Chosen' : 'Pending'}**
           .setDescription(
             `${interaction.member} Chooses **${userChoice?.label}**\n${opponent} chooses **${opponentChoice?.label}**\n\n> ${status}!`
           )
-          .setFields();
-        if (winner !== 'Bot' && winner?.displayAvatarURL()) {
-          overEmbed.setThumbnail(winner.displayAvatarURL());
-        }
+          .setFields()
+          .setThumbnail(winner?.displayAvatarURL() ?? null);
         if (maxRounds === curRound) {
           await interaction.editReply({
             content: 'The game has completed!',
@@ -345,7 +331,7 @@ ${opponent}: **${opponent ? 'Chosen' : 'Pending'}**
   }
   async endGame(
     interaction: ChatInputCommandInteraction<'cached'>,
-    opponent: GuildMember | 'Bot',
+    opponent: GuildMember,
     userScore: number,
     opponentScore: number,
     rounds: number,
@@ -373,7 +359,7 @@ ${opponent}: **${opponent ? 'Chosen' : 'Pending'}**
   }
   getBaseEmbed(
     interaction: ChatInputCommandInteraction<'cached'>,
-    opponent: GuildMember | 'Bot'
+    opponent: GuildMember
   ) {
     return new EmbedBuilder({
       author: {
