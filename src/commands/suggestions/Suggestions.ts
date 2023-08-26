@@ -35,9 +35,9 @@ class Suggestions extends Command<ChatInputCommand> {
           type: ApplicationCommandOptionType.Subcommand,
           options: [
             {
-              name: 'suggestion_id',
+              name: 'message_id',
               type: ApplicationCommandOptionType.String,
-              description: 'Id of the suggestion',
+              description: 'Put the message ID of the suggestion message here!',
               required: true,
             },
           ],
@@ -54,9 +54,9 @@ class Suggestions extends Command<ChatInputCommand> {
               required: true,
             },
             {
-              name: 'reason',
+              name: 'message_id',
               type: ApplicationCommandOptionType.String,
-              description: 'Why did you deny the suggestion?',
+              description: 'Put the message ID of the suggestion message here!',
               required: true,
             },
           ],
@@ -68,9 +68,9 @@ class Suggestions extends Command<ChatInputCommand> {
   async run({ interaction }: CommandRunParams<ChatInputCommand>) {
     await interaction.deferReply({ ephemeral: true });
     const subcommand = interaction.options.getSubcommand();
-    const suggestionId = interaction.options.getString('suggestion_id');
+    const messageId = interaction.options.getString('message_id');
     const reason = interaction.options.getString('reason') ?? 'No reason provided';
-    if (!suggestionId) return;
+    if (!messageId) return;
 
     const suggestionsConfig = await prisma.suggestionsConfig.findUnique({
       where: {
@@ -80,15 +80,15 @@ class Suggestions extends Command<ChatInputCommand> {
     const channel = interaction.guild?.channels.cache.get(
       suggestionsConfig?.channelId || ''
     ) as TextChannel;
-    const suggestionMsg = await channel.messages.fetch(suggestionId);
+    const suggestionMsg = await channel.messages.fetch(messageId);
     const isSuggestionMsg = await isSuggestionMessage(suggestionMsg);
 
     if (!isSuggestionMsg) {
       await interaction.followUp({
         embeds: [
           new EmbedBuilder({
-            title: 'Invalid Suggestion ID!',
-            description: `The suggestion ID (${suggestionId}) does not associate with any suggestions in this guild! Please re-check the ID and try again.`,
+            title: 'Invalid message ID!',
+            description: `The message ID (${messageId}) does not associate with any suggestions in this guild! Please re-check the ID and try again.`,
             color: colors.red,
           }),
         ],
