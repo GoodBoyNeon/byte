@@ -11,4 +11,4 @@ export const CowsayStyleType = {
 
 export type CowsayStyle = Record<keyof typeof CowsayStyleType, string>;
 
-const cowsayStyle: CowsayStyle = {};
+// const cowsayStyle: CowsayStyle = {};

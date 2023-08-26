@@ -17,5 +17,9 @@ export const srcbinify = async (content: string, name?: string) => {
       ],
     }),
   });
-  return `${SRCBIN_URL}/${(await res.json()).key}`;
+  const resJSON = await res.json();
+
+  if (resJSON && typeof resJSON === 'object' && 'key' in resJSON) {
+    return `${SRCBIN_URL}/${resJSON.key}`;
+  }
 };

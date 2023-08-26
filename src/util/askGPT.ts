@@ -36,6 +36,6 @@ export const askGPT = async (prompt: string) => {
     },
     method: 'POST',
   });
-  const resJson: GPTCompletionResponse = await res.json();
+  const resJson = (await res.json()) as GPTCompletionResponse;
   return resJson;
 };
