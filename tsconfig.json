@@ -1,13 +1,18 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "outDir": "./dist",
-    "rootDir": "./src",
+    "target": "es2022",
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "moduleDetection": "force",
+    "moduleResolution": "Node",
+    "sourceMap": true,
+    "module": "NodeNext",
+    "outDir": "./dist",
+    "lib": ["es2022"]
   },
   "include": ["src/**/*", "environment.d.ts", "reset.d.ts"],
   "exclude": ["node_modules/", "dist/"]
