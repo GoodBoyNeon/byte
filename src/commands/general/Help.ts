@@ -196,10 +196,10 @@ class Help extends Command<ChatInputCommand> {
     return commandType === 1
       ? 'Slash Command'
       : commandType === 2
-        ? 'User Context Menu Command'
-        : commandType === 3
-          ? 'Message Context Menu Command'
-          : null;
+      ? 'User Context Menu Command'
+      : commandType === 3
+      ? 'Message Context Menu Command'
+      : null;
   }
 
   async cacheCategoryEmoji(categories: string[]) {
@@ -212,7 +212,7 @@ class Help extends Command<ChatInputCommand> {
       )}\nUse a JSON array for the emojis. ONLY INCLUDE THE EMOJI, NO OTHER TEXT.`;
 
     const res = await askGPT(prompt);
-    const emojisJSON = res.choices[0]?.text.replaceAll("'", '"');
+    const emojisJSON = res.choices[0]?.text.split("'").join('"');
     if (!emojisJSON) return;
     try {
       const matchRegExp = /\[.*?\]/;
