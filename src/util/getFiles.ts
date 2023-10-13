@@ -10,19 +10,18 @@ export const getFiles = (
 
   const firstDepthFSNodes = readdirSync(path);
 
-  loop: for (const FSNode of firstDepthFSNodes) {
+  firstDepthFSNodes.forEach(FSNode => {
     if (!categorized) {
       files.push(join(path, FSNode));
-      break loop;
+    } else {
+      // Basically files but named this way for consistency
+      const secondDepthFSNodes = readdirSync(`${path}/${FSNode}`);
+
+      secondDepthFSNodes.forEach(fileName => {
+        files.push(join(path, FSNode, fileName));
+      });
     }
-
-    // Basically files but named this way for consistency
-    const secondDepthFSNodes = readdirSync(`${path}/${FSNode}`);
-
-    secondDepthFSNodes.forEach(fileName => {
-      files.push(join(path, FSNode, fileName));
-    });
-  }
+  });
   if (extension) {
     return files.filter(file => extension.some(ext => file.endsWith(ext)));
   }
