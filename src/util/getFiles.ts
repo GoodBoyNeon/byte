@@ -1,15 +1,19 @@
 import { readdirSync } from 'fs';
 import { join } from 'path';
 
-export const getFiles = (path: string, categorized: boolean = false): string[] => {
+export const getFiles = (
+  path: string,
+  categorized: boolean = false,
+  extension?: string[]
+): string[] => {
   const files: string[] = [];
 
   const firstDepthFSNodes = readdirSync(path);
 
-  firstDepthFSNodes.forEach(FSNode => {
+  loop: for (const FSNode of firstDepthFSNodes) {
     if (!categorized) {
       files.push(join(path, FSNode));
-      return files;
+      break loop;
     }
 
     // Basically files but named this way for consistency
@@ -17,8 +21,10 @@ export const getFiles = (path: string, categorized: boolean = false): string[] =
 
     secondDepthFSNodes.forEach(fileName => {
       files.push(join(path, FSNode, fileName));
-      return files;
     });
-  });
+  }
+  if (extension) {
+    return files.filter(file => extension.some(ext => file.endsWith(ext)));
+  }
   return files;
 };

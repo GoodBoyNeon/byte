@@ -7,7 +7,10 @@ import { ChatInputCommand, Command, MessageCommand, UserCommand } from '..';
 
 export const registerCommands = async () => {
   const commands: Command<ChatInputCommand | MessageCommand | UserCommand>[] = [];
-  const commandFiles = getFiles(`${__dirname}/../../commands/`, true);
+  const commandFiles = getFiles(`${__dirname}/../../commands/`, true, [
+    '.ts',
+    '.js',
+  ]);
   const loadedCommands: TableData[] = [];
 
   for (const file of commandFiles) {
