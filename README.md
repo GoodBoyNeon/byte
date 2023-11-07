@@ -13,7 +13,7 @@
 </div>
 
 --
->>> IMPORTANT: This is not the current source code of Byte. Byte is not an open-source bot. This code is a previous version of the bot, and it has been made public after the code changed. That said, feel free to copy anything you like in this repository. Make sure to invite the bot to check its latest features!
+> IMPORTANT: This is not the current source code of Byte. Byte is not an open-source bot. This code is a previous version of the bot, and it has been made public after the code changed. That said, feel free to copy anything you like in this repository. Make sure to invite the bot to check its latest features!
 --
 
 ## Features
